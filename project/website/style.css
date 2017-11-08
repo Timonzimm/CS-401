@@ -4,7 +4,7 @@ body {
   font-weight: 300;
   font-size: 17px;
   overflow: hidden;
-  background-color: #000;
+  background-color: #ECF0F1;
 }
 
 #map-holder {
@@ -13,21 +13,30 @@ body {
 }
 
 svg rect {
-  fill: #000;
+  fill: #ECF0F1;
   /* map background colour */
 }
 
 .country {
-  fill: #7f8c8d;
+  fill: #1d1d1d;
   /* country colour */
-  stroke: #000;
+  stroke: #434343; /* 4 levels monochromatic below the filling color to get a good contrast balance */
   /* country border colour */
-  stroke-width: 1;
+  stroke-width: 0.3;
   /* country border width */
 }
 .country:hover {
-  fill-opacity: 0.9;
+  fill-opacity: 0.95;
   cursor: pointer;
+}
+.active:hover {
+  fill-opacity: 1;
+  cursor: pointer;
+}
+
+.active {
+  fill: #434343;
+  /* highlight colour for selected country */
 }
 
 #country-details {
@@ -39,24 +48,4 @@ svg rect {
   padding: 50px;
   width: 250px;
   height: 100px;
-}
-
-.active {
-  fill: #FFF;
-  /* highlight colour for selected country */
-}
-
-.countryLabel {
-  display: none;
-  /* hide all country labels by default */
-}
-
-.countryName {
-  fill: #FFFAFF;
-  /* country label text colour */
-}
-
-.countryLabelBg {
-  fill: transparent;
-  /* country label background colour */
 }
