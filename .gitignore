@@ -1,5 +1,6 @@
 project/data/*
 project/website/node_modules/*
+project/website/static/bundle.js
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

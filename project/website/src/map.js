@@ -160,3 +160,4 @@ countries = countriesGroup
 		.attr("class", "country")
 		.on("click", clicked);
 initiateZoom();
+
