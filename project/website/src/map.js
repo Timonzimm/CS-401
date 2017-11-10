@@ -1,3 +1,7 @@
+var d3 = require('d3');
+var $ = require('jquery');
+var countries = require('./countries.geo.json');
+
 // DEFINE VARIABLES
 // Define size of map group
 // Full world map is 2:1 ratio
@@ -132,32 +136,27 @@ function reset() {
 }
 
 // get map data
-d3.json(
-    "countries.geo.json",
-    function (json) {
         //Bind data and create one path per GeoJSON feature
-        countriesGroup = svg.append("g").attr("id", "map");
-        // add a background rectangle
-        countriesGroup
-            .append("rect")
-            .attr("x", 0)
-            .attr("y", 0)
-            .attr("width", w)
-            .attr("height", h)
-            .on("click", reset); // reset when clicking outside countries
+countriesGroup = svg.append("g").attr("id", "map");
+// add a background rectangle
+countriesGroup
+		.append("rect")
+		.attr("x", 0)
+		.attr("y", 0)
+		.attr("width", w)
+		.attr("height", h)
+		.on("click", reset); // reset when clicking outside countries
 
-        // draw a path for each feature/country
-        countries = countriesGroup
-            .selectAll("path")
-            .data(json.features)
-            .enter()
-            .append("path")
-            .attr("d", path)
-            .attr("id", function (d, i) {
-                return "country" + d.properties.iso_a3;
-            })
-            .attr("class", "country")
-            .on("click", clicked);
-        initiateZoom();
-    }
-);
+// draw a path for each feature/country
+countries = countriesGroup
+		.selectAll("path")
+		.data(countries.features)
+		.enter()
+		.append("path")
+		.attr("d", path)
+		.attr("id", function (d, i) {
+				return "country" + d.properties.iso_a3;
+		})
+		.attr("class", "country")
+		.on("click", clicked);
+initiateZoom();
