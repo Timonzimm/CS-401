@@ -1,4 +1,5 @@
-project/data/*
+project/api/data/*
+!project/api/data/.gitkeep
 project/website/node_modules/*
 project/website/package-lock.json
 project/website/yarn.lock
