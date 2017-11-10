@@ -67,7 +67,7 @@ $(window).resize(function () {
     svg
         .attr("width", $("#map-holder").width())
         .attr("height", $("#map-holder").height());
-    initiateZoom();
+    reset();
 });
 
 // create an SVG
@@ -136,8 +136,9 @@ function reset() {
 }
 
 // get map data
-        //Bind data and create one path per GeoJSON feature
+//Bind data and create one path per GeoJSON feature
 countriesGroup = svg.append("g").attr("id", "map");
+
 // add a background rectangle
 countriesGroup
 		.append("rect")
@@ -154,8 +155,8 @@ countries = countriesGroup
 		.enter()
 		.append("path")
 		.attr("d", path)
-		.attr("id", function (d, i) {
-				return "country" + d.properties.iso_a3;
+		.attr("id", function (d) {
+				return "country-" + d.id;
 		})
 		.attr("class", "country")
 		.on("click", clicked);
