@@ -1,4 +1,5 @@
 var d3 = require('d3');
+var axios = require('axios');
 var $ = require('jquery');
 var countries = require('./countries.geo.json');
 
@@ -58,6 +59,8 @@ function initiateZoom() {
     midY = ($("#map-holder").height() - minZoom * h) / 2;
     // change zoom transform to min zoom and centre offsets
     svg.transition().duration(500).call(zoom.transform, d3.zoomIdentity.translate(midX, midY).scale(minZoom));
+
+    draw_markers();
 }
 
 
@@ -135,30 +138,79 @@ function reset() {
     document.getElementById("country-details").style.display = "none";
 }
 
+function draw_markers(country = false, N = 10000) {
+    axios.get(`http://127.0.0.1:5000/coords/${N}`, {
+            headers: {
+                'Access-Control-Allow-Origin': '*',
+            }
+        })
+        .then((response) => {
+            points = response.data
+            const max = Math.max(...points.map(arr => arr[2]))
+
+            countriesGroup
+                .selectAll(".mark")
+                .data(points)
+                .enter()
+                .append("circle")
+                .attr("class", "mark")
+                .attr("cx", d => projection(d)[0])
+                .attr("cy", d => projection(d)[1])
+                .attr("fill", d => d3.interpolatePlasma(d[2] / max))
+                .on("click", d => d3.select(`#country-${d[3]}`).dispatch("click")) // To dispatch the event and zoom on the correct country
+        })
+        .catch((error) => {
+            console.log(error);
+        });
+}
 // get map data
 //Bind data and create one path per GeoJSON feature
 countriesGroup = svg.append("g").attr("id", "map");
 
 // add a background rectangle
 countriesGroup
-		.append("rect")
-		.attr("x", 0)
-		.attr("y", 0)
-		.attr("width", w)
-		.attr("height", h)
-		.on("click", reset); // reset when clicking outside countries
+    .append("rect")
+    .attr("x", 0)
+    .attr("y", 0)
+    .attr("width", w)
+    .attr("height", h)
+    .on("click", reset); // reset when clicking outside countries
 
 // draw a path for each feature/country
 countries = countriesGroup
-		.selectAll("path")
-		.data(countries.features)
-		.enter()
-		.append("path")
-		.attr("d", path)
-		.attr("id", function (d) {
-				return "country-" + d.id;
-		})
-		.attr("class", "country")
-		.on("click", clicked);
-initiateZoom();
+    .selectAll("path")
+    .data(countries.features)
+    .enter()
+    .append("path")
+    .attr("d", path)
+    .attr("id", (d) => `country-${d.id}`)
+    .attr("class", "country")
+    .attr("fill" (d) => {
+        console.log(d);
+        return "black";
+        /* axios.get(`http://127.0.0.1:5000/coords/${N}`, {
+                headers: {
+                    'Access-Control-Allow-Origin': '*',
+                }
+            })
+            .then((response) => {
+                points = response.data
+                const max = Math.max(...points.map(arr => arr[2]))
 
+                countriesGroup
+                    .selectAll(".mark")
+                    .data(points)
+                    .enter()
+                    .append("circle")
+                    .attr("class", "mark")
+                    .attr("cx", d => projection(d)[0])
+                    .attr("cy", d => projection(d)[1])
+                    .attr("fill", d => d3.interpolatePlasma(d[2] / max))
+                    .on("click", d => d3.select(`#country-${d[3]}`).dispatch("click")) // To dispatch the event and zoom on the correct country
+            })
+            .catch((error) => {
+                console.log(error);
+            }); */
+    })
+    .on("click", clicked);
+initiateZoom();

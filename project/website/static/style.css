@@ -36,7 +36,14 @@ svg rect {
 
 .active {
   fill: #434343;
+  cursor: default;
   /* highlight colour for selected country */
+}
+
+circle.mark {
+  r: 3px;
+  fill-opacity: 0.75;
+  cursor: pointer;
 }
 
 #country-details {

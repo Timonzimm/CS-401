@@ -27,7 +27,7 @@ def all_attacks_by_country():
 
 @app.route('/coords/<int:N>')
 def all_attacks_by_coordinates_sample(N):
-    cur = get_db().execute('SELECT longitude, latitude, (SELECT COUNT(*) FROM Attacks GROUP BY iso_code) FROM Attacks')
+    cur = get_db().execute('SELECT longitude, latitude, num, t1.iso_code FROM Attacks as t1 INNER JOIN (SELECT iso_code, COUNT(*) as num FROM Attacks GROUP BY iso_code) as t2 ON t1.iso_code=t2.iso_code;')
     num_attacks = cur.fetchall()
     cur.close()
     return jsonify(random.sample(num_attacks, N))
