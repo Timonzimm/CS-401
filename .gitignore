@@ -1,5 +1,7 @@
 project/data/*
 project/website/node_modules/*
+project/website/package-lock.json
+project/website/yarn.lock
 project/website/static/bundle.js
 
 # Byte-compiled / optimized / DLL files
