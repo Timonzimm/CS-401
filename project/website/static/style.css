@@ -1,0 +1,51 @@
+body {
+  margin: 0;
+  font-family: 'Lato', sans-serif;
+  font-weight: 300;
+  font-size: 17px;
+  overflow: hidden;
+  background-color: #ECF0F1;
+}
+
+#map-holder {
+  width: 100vw;
+  height: 100vh;
+}
+
+svg rect {
+  fill: #ECF0F1;
+  /* map background colour */
+}
+
+.country {
+  fill: #1d1d1d;
+  /* country colour */
+  stroke: #434343; /* 4 levels monochromatic below the filling color to get a good contrast balance */
+  /* country border colour */
+  stroke-width: 0.3;
+  /* country border width */
+}
+.country:hover {
+  fill-opacity: 0.95;
+  cursor: pointer;
+}
+.active:hover {
+  fill-opacity: 1;
+  cursor: pointer;
+}
+
+.active {
+  fill: #434343;
+  /* highlight colour for selected country */
+}
+
+#country-details {
+  display: none;
+  position: absolute;
+  background-color: #FFF;
+  left: 50px;
+  top: 50px;
+  padding: 50px;
+  width: 250px;
+  height: 100px;
+}
