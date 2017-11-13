@@ -17,7 +17,7 @@ svg rect {
 }
 
 .country {
-  stroke: #040404;
+  stroke: #000;
   stroke-width: 0.3;
 }
 .country:hover {

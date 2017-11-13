@@ -3,6 +3,8 @@ var axios = require('axios');
 var $ = require('jquery');
 var countries = require('./countries.geo.json');
 
+API_SERVER = "http://128.179.164.25:5000"
+
 // DEFINE VARIABLES
 // Define size of map group
 // Full world map is 2:1 ratio
@@ -129,7 +131,7 @@ function clicked(d) {
         .selectAll(".mark")
         .remove()
 
-    axios.get(`http://127.0.0.1:5000/coords/${d.id}`, {
+    axios.get(`${API_SERVER}/coords/${d.id}`, {
             headers: {
                 'Access-Control-Allow-Origin': '*',
             }
@@ -167,31 +169,6 @@ function reset() {
     document.getElementById("country-details").style.display = "none";
 }
 
-function draw_markers(country = false, N = 10000) {
-    axios.get(`http://127.0.0.1:5000/coords/${N}`, {
-            headers: {
-                'Access-Control-Allow-Origin': '*',
-            }
-        })
-        .then((response) => {
-            points = response.data
-            const max = Math.max(...points.map(arr => arr[2]))
-
-            countriesGroup
-                .selectAll(".mark")
-                .data(points)
-                .enter()
-                .append("circle")
-                .attr("class", "mark")
-                .attr("cx", d => projection(d)[0])
-                .attr("cy", d => projection(d)[1])
-                .attr("fill", d => d3.interpolatePlasma(d[2] / max))
-                .on("click", d => d3.select(`#country-${d[3]}`).dispatch("click")) // To dispatch the event and zoom on the correct country
-        })
-        .catch((error) => {
-            console.log(error);
-        });
-}
 // get map data
 //Bind data and create one path per GeoJSON feature
 countriesGroup = svg.append("g").attr("id", "map");
@@ -206,7 +183,7 @@ countriesGroup
     .on("click", reset); // reset when clicking outside countries
 
 // draw a path for each feature/country
-axios.get(`http://127.0.0.1:5000/countries`, {
+axios.get(`${API_SERVER}/countries`, {
         headers: {
             'Access-Control-Allow-Origin': '*',
         }
@@ -215,14 +192,22 @@ axios.get(`http://127.0.0.1:5000/countries`, {
         num_attacks = response.data;
         const obj = {}
         let max = 0
+        let min = Infinity
         num_attacks.forEach(country => {
             if (country[1] > max) {
                 max = country[1]
             }
+            if (country[1] < min) {
+                min = country[1]
+            }
+
             obj[country[0]] = country[1]
         });
 
-        const interpolator = d3.interpolateLab("#ECF0F1", "#c0392b")
+        const interpolator = d3.scaleLinear()
+            .range(["#ECF0F1", "#c0392b"])
+            .interpolate(d3.interpolateLab);
+        //const interpolator = d3.interpolateLab("#ECF0F1", "#c0392b")
         countries = countriesGroup
             .selectAll("path")
             .data(countries.features)
@@ -231,7 +216,7 @@ axios.get(`http://127.0.0.1:5000/countries`, {
             .attr("d", path)
             .attr("fill", (d) => {
                 if (obj[d.id])
-                    return interpolator(obj[d.id] / max)
+                    return interpolator((obj[d.id] - min) / (max - min))
                 else
                     return "#ECF0F1"
             })
