@@ -1,4 +1,5 @@
 import sqlite3
+from scipy.stats import gaussian_kde
 from flask import Flask, g, jsonify
 from flask_cors import CORS
 app = Flask(__name__)

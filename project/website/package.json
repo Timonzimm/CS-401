@@ -12,7 +12,10 @@
   "dependencies": {
     "axios": "^0.17.0",
     "d3": "^4.11.0",
+    "d3-contour": "^1.1.1",
     "jquery": "^3.2.1",
+    "pdfast": "^0.2.0",
+    "science": "^1.9.3",
     "topojson": "^3.0.2"
   }
 }
