@@ -59,8 +59,6 @@ function initiateZoom() {
     midY = ($("#map-holder").height() - minZoom * h) / 2;
     // change zoom transform to min zoom and centre offsets
     svg.transition().duration(500).call(zoom.transform, d3.zoomIdentity.translate(midX, midY).scale(minZoom));
-
-    draw_markers();
 }
 
 
@@ -127,6 +125,33 @@ function clicked(d) {
     active = d3.select(this).classed("active", true);
     boxZoom(path.bounds(d), path.centroid(d), 50);
 
+    countriesGroup
+        .selectAll(".mark")
+        .remove()
+
+    axios.get(`http://127.0.0.1:5000/coords/${d.id}`, {
+            headers: {
+                'Access-Control-Allow-Origin': '*',
+            }
+        })
+        .then((response) => {
+            points = response.data.map(arr => arr.concat(3))
+
+            countriesGroup
+                .selectAll(".mark")
+                .data(points)
+                .enter()
+                .append("circle")
+                .attr("class", "mark")
+                .attr("cx", d => projection(d)[0])
+                .attr("cy", d => projection(d)[1])
+            //.attr("fill", d => d3.interpolatePlasma(d[2] / max))
+            //.on("click", d => d3.select(`#country-${d[3]}`).dispatch("click")) // To dispatch the event and zoom on the correct country
+        })
+        .catch((error) => {
+            console.log(error);
+        });
+
     document.getElementById("country-details").style.display = "inline";
 }
 
@@ -134,6 +159,10 @@ function reset() {
     active.classed("active", false);
     active = d3.select(null);
     initiateZoom();
+
+    countriesGroup
+        .selectAll(".mark")
+        .remove()
 
     document.getElementById("country-details").style.display = "none";
 }
@@ -177,7 +206,56 @@ countriesGroup
     .on("click", reset); // reset when clicking outside countries
 
 // draw a path for each feature/country
-countries = countriesGroup
+axios.get(`http://127.0.0.1:5000/countries`, {
+        headers: {
+            'Access-Control-Allow-Origin': '*',
+        }
+    })
+    .then((response) => {
+        num_attacks = response.data;
+        const obj = {}
+        let max = 0
+        num_attacks.forEach(country => {
+            if (country[1] > max) {
+                max = country[1]
+            }
+            obj[country[0]] = country[1]
+        });
+
+        const interpolator = d3.interpolateLab("#ECF0F1", "#c0392b")
+        countries = countriesGroup
+            .selectAll("path")
+            .data(countries.features)
+            .enter()
+            .append("path")
+            .attr("d", path)
+            .attr("fill", (d) => {
+                if (obj[d.id])
+                    return interpolator(obj[d.id] / max)
+                else
+                    return "#ECF0F1"
+            })
+            .attr("id", (d) => `country-${d.id}`)
+            .attr("class", "country")
+            .on("click", clicked);
+        /* const max = Math.max(...points.map(arr => arr[2]))
+
+        countriesGroup
+            .selectAll(".mark")
+            .data(points)
+            .enter()
+            .append("circle")
+            .attr("class", "mark")
+            .attr("cx", d => projection(d)[0])
+            .attr("cy", d => projection(d)[1])
+            .attr("fill", d => d3.interpolatePlasma(d[2] / max))
+            .on("click", d => d3.select(`#country-${d[3]}`).dispatch("click")) */
+    })
+    .catch((error) => {
+        console.log(error);
+    });
+
+/* countries = countriesGroup
     .selectAll("path")
     .data(countries.features)
     .enter()
@@ -185,10 +263,9 @@ countries = countriesGroup
     .attr("d", path)
     .attr("id", (d) => `country-${d.id}`)
     .attr("class", "country")
-    .attr("fill" (d) => {
-        console.log(d);
-        return "black";
-        /* axios.get(`http://127.0.0.1:5000/coords/${N}`, {
+    .attr("fill", (d) => {
+        return d3.interpolatePlasma(0.5)
+        axios.get(`http://127.0.0.1:5000/coords/${N}`, {
                 headers: {
                     'Access-Control-Allow-Origin': '*',
                 }
@@ -210,7 +287,7 @@ countries = countriesGroup
             })
             .catch((error) => {
                 console.log(error);
-            }); */
+            });
     })
-    .on("click", clicked);
+    .on("click", clicked); */
 initiateZoom();

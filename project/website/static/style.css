@@ -14,36 +14,27 @@ body {
 
 svg rect {
   fill: #ECF0F1;
-  /* map background colour */
 }
 
 .country {
-  fill: #1d1d1d;
-  /* country colour */
-  stroke: #434343; /* 4 levels monochromatic below the filling color to get a good contrast balance */
-  /* country border colour */
+  stroke: #040404;
   stroke-width: 0.3;
-  /* country border width */
 }
 .country:hover {
   fill-opacity: 0.95;
   cursor: pointer;
 }
-.active:hover {
-  fill-opacity: 1;
-  cursor: pointer;
-}
 
 .active {
-  fill: #434343;
   cursor: default;
-  /* highlight colour for selected country */
 }
 
 circle.mark {
-  r: 3px;
+  r: 1px;
+  fill: red;
+  stroke: #000000;
+  stroke-width: 0.1;
   fill-opacity: 0.75;
-  cursor: pointer;
 }
 
 #country-details {

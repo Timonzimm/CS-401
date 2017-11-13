@@ -20,17 +20,17 @@ def close_connection(exception):
 
 @app.route('/countries')
 def all_attacks_by_country():
-    cur = get_db().execute('SELECT iso_code, COUNT(*) FROM Attacks GROUP BY iso_code')
+    cur = get_db().execute('SELECT iso_code, COUNT(*) as num_attacks FROM Attacks GROUP BY iso_code')
     num_attacks = cur.fetchall()
     cur.close()
     return jsonify(num_attacks)
 
-@app.route('/coords/<int:N>')
-def all_attacks_by_coordinates_sample(N):
-    cur = get_db().execute('SELECT longitude, latitude, num, t1.iso_code FROM Attacks as t1 INNER JOIN (SELECT iso_code, COUNT(*) as num FROM Attacks GROUP BY iso_code) as t2 ON t1.iso_code=t2.iso_code;')
+@app.route('/coords/<string:country>')
+def all_attacks_by_coordinates_sample(country):
+    cur = get_db().execute('SELECT longitude, latitude FROM Attacks WHERE iso_code="{}"'.format(country))
     num_attacks = cur.fetchall()
     cur.close()
-    return jsonify(random.sample(num_attacks, N))
+    return jsonify(num_attacks)
 
 @app.route('/coords/year/<int:year>')
 def all_attacks_by_coordinates_and_year(year):
