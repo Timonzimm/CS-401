@@ -1,4 +1,4 @@
-import sqlite3, random
+import sqlite3
 from flask import Flask, g, jsonify
 from flask_cors import CORS
 app = Flask(__name__)
