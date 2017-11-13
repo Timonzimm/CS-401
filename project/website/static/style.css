@@ -16,25 +16,28 @@ svg rect {
   fill: #ECF0F1;
 }
 
-.country {
+#map .country {
   stroke: #000;
   stroke-width: 0.3;
 }
-.country:hover {
+
+#map .country:hover {
   fill-opacity: 0.95;
   cursor: pointer;
 }
 
-.active {
-  cursor: default;
+#map .active {
+  cursor: default !important;
+}
+
+#overlay {
+  stroke: blue;
+  fill: transparent;
 }
 
 circle.mark {
-  r: 1px;
-  fill: red;
-  stroke: #000000;
-  stroke-width: 0.1;
-  fill-opacity: 0.75;
+  fill: #ECF0F1;
+  stroke: black;
 }
 
 #country-details {

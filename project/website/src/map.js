@@ -1,9 +1,26 @@
 var d3 = require('d3');
+var d3Contour = require('d3-contour')
 var axios = require('axios');
 var $ = require('jquery');
 var countries = require('./countries.geo.json');
 
-API_SERVER = "http://128.179.164.25:5000"
+function getRandomSubarray(arr, size) {
+    var shuffled = arr.slice(0),
+        i = arr.length,
+        temp, index;
+    while (i--) {
+        index = Math.floor((i + 1) * Math.random());
+        temp = shuffled[index];
+        shuffled[index] = shuffled[i];
+        shuffled[i] = temp;
+    }
+    return {
+        selected: shuffled.slice(0, size),
+        not_selected: shuffled.slice(size, shuffled.length)
+    }
+}
+
+API_SERVER = "http://127.0.0.1:5000"
 
 // DEFINE VARIABLES
 // Define size of map group
@@ -137,18 +154,77 @@ function clicked(d) {
             }
         })
         .then((response) => {
-            points = response.data.map(arr => arr.concat(3))
+            const minXY = path.bounds(d)[0];
+            const maxXY = path.bounds(d)[1];
+            const height = maxXY[1] - minXY[1];
+            const width = maxXY[0] - minXY[0];
+
+            const points = response.data.map(p => [parseFloat(p[0]), parseFloat(p[1])]).filter(p => p[0] && p[1]); // cast and drop undefined
+            const contours = d3Contour
+                .contourDensity()
+                .size([width, height])
+                (points);
+
+            countriesGroup
+                .append("g")
+                .attr("id", "overlay")
+                .selectAll("path")
+                .data(contours)
+                .enter()
+                .append("path")
+                //.attr("fill", d => d3.interpolateInferno(d.value))
+                .attr("d", path);
 
             countriesGroup
                 .selectAll(".mark")
                 .data(points)
                 .enter()
                 .append("circle")
+                .attr("r", 5 / zoomScale)
+                .style("stroke-width", 1 / zoomScale)
                 .attr("class", "mark")
-                .attr("cx", d => projection(d)[0])
-                .attr("cy", d => projection(d)[1])
-            //.attr("fill", d => d3.interpolatePlasma(d[2] / max))
-            //.on("click", d => d3.select(`#country-${d[3]}`).dispatch("click")) // To dispatch the event and zoom on the correct country
+                .attr("cx", p => projection(p)[0])
+                .attr("cy", p => projection(p)[1])
+
+            // We need to define the KDE bandwidth with respect to the country size, hence using the "scale" proxy which adapts to the country size
+            /* const xPDF = pdfast.create(points.map(p => p[0]), {size: points.length, width: points.length}); //  parseInt(1/zoomScale*1000)
+            const yPDF = pdfast.create(points.map(p => p[1]), {size: points.length, width: points.length}); //  parseInt(1/zoomScale*1000) */
+
+            /* const kdeX = science.stats.kde().sample(points.map(p => p[0]))
+            const kdeY = science.stats.kde().sample(points.map(p => p[1]))
+            const {
+                selected,
+                not_selected
+            } = getRandomSubarray(points, parseInt(Math.pow(points.length, 0.6)))
+            const xPDF = kdeX(selected.map(p => p[0]))
+            const yPDF = kdeY(selected.map(p => p[1]))
+
+            let min = Infinity
+            let max = 0
+            const densities = selected.map((p, i) => {
+                const density = xPDF[i][1] * yPDF[i][1]
+                if (density > max) {
+                    max = density
+                }
+                if (density < min) {
+                    min = density
+                }
+
+                return p.concat(density)
+            }).sort((a, b) => (a[2] > b[2]) ? 1 : -1) // Sort to draw higher density points last, so they are on top
+
+            countriesGroup
+                .selectAll(".mark")
+                .data(densities)
+                .enter()
+                .append("circle")
+                .attr("r", 5 / zoomScale)
+                .style("stroke-width", 1 / zoomScale)
+                .attr("class", "mark")
+                .attr("cx", p => projection(p)[0])
+                .attr("cy", p => projection(p)[1])
+                .attr("fill", p => d3.interpolateInferno((p[2] - min) / (max - min)))
+                .attr("fill-opacity", p => (p[2] - min) / (max - min) + 0.5) */
         })
         .catch((error) => {
             console.log(error);
@@ -182,6 +258,7 @@ countriesGroup
     .attr("height", h)
     .on("click", reset); // reset when clicking outside countries
 
+console.log("Requesting map...");
 // draw a path for each feature/country
 axios.get(`${API_SERVER}/countries`, {
         headers: {
@@ -205,7 +282,7 @@ axios.get(`${API_SERVER}/countries`, {
         });
 
         const interpolator = d3.scaleLinear()
-            .range(["#ECF0F1", "#c0392b"])
+            .range(["#ECF0F1", "#1D1D1D"])
             .interpolate(d3.interpolateLab);
         //const interpolator = d3.interpolateLab("#ECF0F1", "#c0392b")
         countries = countriesGroup
@@ -216,63 +293,16 @@ axios.get(`${API_SERVER}/countries`, {
             .attr("d", path)
             .attr("fill", (d) => {
                 if (obj[d.id])
-                    return interpolator((obj[d.id] - min) / (max - min))
+                    return interpolator(Math.sqrt((obj[d.id] - min) / (max - min)))
                 else
                     return "#ECF0F1"
             })
             .attr("id", (d) => `country-${d.id}`)
             .attr("class", "country")
             .on("click", clicked);
-        /* const max = Math.max(...points.map(arr => arr[2]))
-
-        countriesGroup
-            .selectAll(".mark")
-            .data(points)
-            .enter()
-            .append("circle")
-            .attr("class", "mark")
-            .attr("cx", d => projection(d)[0])
-            .attr("cy", d => projection(d)[1])
-            .attr("fill", d => d3.interpolatePlasma(d[2] / max))
-            .on("click", d => d3.select(`#country-${d[3]}`).dispatch("click")) */
     })
     .catch((error) => {
         console.log(error);
     });
 
-/* countries = countriesGroup
-    .selectAll("path")
-    .data(countries.features)
-    .enter()
-    .append("path")
-    .attr("d", path)
-    .attr("id", (d) => `country-${d.id}`)
-    .attr("class", "country")
-    .attr("fill", (d) => {
-        return d3.interpolatePlasma(0.5)
-        axios.get(`http://127.0.0.1:5000/coords/${N}`, {
-                headers: {
-                    'Access-Control-Allow-Origin': '*',
-                }
-            })
-            .then((response) => {
-                points = response.data
-                const max = Math.max(...points.map(arr => arr[2]))
-
-                countriesGroup
-                    .selectAll(".mark")
-                    .data(points)
-                    .enter()
-                    .append("circle")
-                    .attr("class", "mark")
-                    .attr("cx", d => projection(d)[0])
-                    .attr("cy", d => projection(d)[1])
-                    .attr("fill", d => d3.interpolatePlasma(d[2] / max))
-                    .on("click", d => d3.select(`#country-${d[3]}`).dispatch("click")) // To dispatch the event and zoom on the correct country
-            })
-            .catch((error) => {
-                console.log(error);
-            });
-    })
-    .on("click", clicked); */
 initiateZoom();

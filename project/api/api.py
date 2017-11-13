@@ -1,4 +1,5 @@
 import sqlite3
+from scipy.stats import gaussian_kde
 from flask import Flask, g, jsonify
 from flask_cors import CORS
 app = Flask(__name__)
@@ -41,4 +42,4 @@ def all_attacks_by_coordinates_and_year(year):
 
 
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=5000, debug=True)
+    app.run(host="0.0.0.0", port=5000)
