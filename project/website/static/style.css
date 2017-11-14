@@ -28,16 +28,16 @@ svg rect {
 
 #map .active {
   cursor: default !important;
+  fill: #ECF0F1;
+}
+
+#map .inactive {
+  opacity: 0.1;
 }
 
 #overlay {
   stroke: blue;
   fill: transparent;
-}
-
-circle.mark {
-  fill: #ECF0F1;
-  stroke: black;
 }
 
 #country-details {

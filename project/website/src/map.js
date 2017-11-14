@@ -1,24 +1,9 @@
 var d3 = require('d3');
-var d3Contour = require('d3-contour')
 var axios = require('axios');
 var $ = require('jquery');
 var countries = require('./countries.geo.json');
-
-function getRandomSubarray(arr, size) {
-    var shuffled = arr.slice(0),
-        i = arr.length,
-        temp, index;
-    while (i--) {
-        index = Math.floor((i + 1) * Math.random());
-        temp = shuffled[index];
-        shuffled[index] = shuffled[i];
-        shuffled[i] = temp;
-    }
-    return {
-        selected: shuffled.slice(0, size),
-        not_selected: shuffled.slice(size, shuffled.length)
-    }
-}
+var science = require('science');
+var _ = require('lodash');
 
 API_SERVER = "http://127.0.0.1:5000"
 
@@ -98,7 +83,7 @@ var svg = d3
     .attr("width", $("#map-holder").width())
     .attr("height", $("#map-holder").height())
 
-function boxZoom(box, centroid, paddingPerc) {
+function boxZoom(box, centroid, paddingPerc, callback) {
     minXY = box[0];
     maxXY = box[1];
     // find size of map area defined
@@ -135,106 +120,76 @@ function boxZoom(box, centroid, paddingPerc) {
         .call(
             zoom.transform,
             d3.zoomIdentity.translate(dleft, dtop).scale(zoomScale)
-        );
+        )
+        .on("end", callback);
 }
 
 function clicked(d) {
     if (active.node() === this) return reset();
+    countries.classed("inactive", true);
     active.classed("active", false);
     active = d3.select(this).classed("active", true);
-    boxZoom(path.bounds(d), path.centroid(d), 50);
+    active.classed("inactive", false);
 
     countriesGroup
         .selectAll(".mark")
         .remove()
 
-    axios.get(`${API_SERVER}/coords/${d.id}`, {
-            headers: {
-                'Access-Control-Allow-Origin': '*',
-            }
-        })
-        .then((response) => {
-            const minXY = path.bounds(d)[0];
-            const maxXY = path.bounds(d)[1];
-            const height = maxXY[1] - minXY[1];
-            const width = maxXY[0] - minXY[0];
 
-            const points = response.data.map(p => [parseFloat(p[0]), parseFloat(p[1])]).filter(p => p[0] && p[1]); // cast and drop undefined
-            const contours = d3Contour
-                .contourDensity()
-                .size([width, height])
-                (points);
-
-            countriesGroup
-                .append("g")
-                .attr("id", "overlay")
-                .selectAll("path")
-                .data(contours)
-                .enter()
-                .append("path")
-                //.attr("fill", d => d3.interpolateInferno(d.value))
-                .attr("d", path);
-
-            countriesGroup
-                .selectAll(".mark")
-                .data(points)
-                .enter()
-                .append("circle")
-                .attr("r", 5 / zoomScale)
-                .style("stroke-width", 1 / zoomScale)
-                .attr("class", "mark")
-                .attr("cx", p => projection(p)[0])
-                .attr("cy", p => projection(p)[1])
-
-            // We need to define the KDE bandwidth with respect to the country size, hence using the "scale" proxy which adapts to the country size
-            /* const xPDF = pdfast.create(points.map(p => p[0]), {size: points.length, width: points.length}); //  parseInt(1/zoomScale*1000)
-            const yPDF = pdfast.create(points.map(p => p[1]), {size: points.length, width: points.length}); //  parseInt(1/zoomScale*1000) */
-
-            /* const kdeX = science.stats.kde().sample(points.map(p => p[0]))
-            const kdeY = science.stats.kde().sample(points.map(p => p[1]))
-            const {
-                selected,
-                not_selected
-            } = getRandomSubarray(points, parseInt(Math.pow(points.length, 0.6)))
-            const xPDF = kdeX(selected.map(p => p[0]))
-            const yPDF = kdeY(selected.map(p => p[1]))
-
-            let min = Infinity
-            let max = 0
-            const densities = selected.map((p, i) => {
-                const density = xPDF[i][1] * yPDF[i][1]
-                if (density > max) {
-                    max = density
+    boxZoom(path.bounds(d), path.centroid(d), 50, () => {
+        axios.get(`${API_SERVER}/coords/${d.id}`, {
+                headers: {
+                    'Access-Control-Allow-Origin': '*',
                 }
-                if (density < min) {
-                    min = density
-                }
+            })
+            .then((response) => {
+                // cast, drop undefined and duplicates up to 1 decimal in lat and long or 0 decimal if a lot of attacks
+                const data = response.data
+                const points = _.uniqBy(data.map(p => [parseFloat(p[0]), parseFloat(p[1])]).filter(p => p[0] && p[1]), p => [p[0].toFixed(1), p[1].toFixed(1)].join());
 
-                return p.concat(density)
-            }).sort((a, b) => (a[2] > b[2]) ? 1 : -1) // Sort to draw higher density points last, so they are on top
+                const kdeX = science.stats.kde().sample(points.map(p => p[0]))
+                const kdeY = science.stats.kde().sample(points.map(p => p[1]))
+                const xPDF = kdeX(points.map(p => p[0]))
+                const yPDF = kdeY(points.map(p => p[1]))
 
-            countriesGroup
-                .selectAll(".mark")
-                .data(densities)
-                .enter()
-                .append("circle")
-                .attr("r", 5 / zoomScale)
-                .style("stroke-width", 1 / zoomScale)
-                .attr("class", "mark")
-                .attr("cx", p => projection(p)[0])
-                .attr("cy", p => projection(p)[1])
-                .attr("fill", p => d3.interpolateInferno((p[2] - min) / (max - min)))
-                .attr("fill-opacity", p => (p[2] - min) / (max - min) + 0.5) */
-        })
-        .catch((error) => {
-            console.log(error);
-        });
+                let min = Infinity
+                let max = 0
+                const densities = points.map((p, i) => {
+                    const density = xPDF[i][1] * yPDF[i][1]
+                    if (density > max) {
+                        max = density
+                    }
+                    if (density < min) {
+                        min = density
+                    }
+
+                    return p.concat(density)
+                }).sort((a, b) => (a[2] > b[2]) ? 1 : -1) // Sort to draw higher density points last, so they are on top
+
+                countriesGroup
+                    .selectAll(".mark")
+                    .data(densities)
+                    .enter()
+                    .append("circle")
+                    .attr("r", 5 / zoomScale)
+                    .style("stroke-width", 1 / zoomScale)
+                    .attr("class", "mark")
+                    .attr("cx", p => projection(p)[0])
+                    .attr("cy", p => projection(p)[1])
+                    .attr("fill", p => d3.interpolateInferno((p[2] - min) / (max - min)))
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+    });
+
 
     document.getElementById("country-details").style.display = "inline";
 }
 
 function reset() {
     active.classed("active", false);
+    countries.classed("inactive", false);
     active = d3.select(null);
     initiateZoom();
 
@@ -260,7 +215,7 @@ countriesGroup
 
 console.log("Requesting map...");
 // draw a path for each feature/country
-axios.get(`${API_SERVER}/countries`, {
+axios.get(`${API_SERVER}/attacks/countries`, {
         headers: {
             'Access-Control-Allow-Origin': '*',
         }
