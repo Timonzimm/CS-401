@@ -61,3 +61,6 @@ All of these will be done through a "Data Story" type of website:
 - What would be the best policy from your point of view? After thinking it through, number 4 seems like the best option to automate such a website.
 - Alternative policies/techniques to compare with "sane" countries and prune other factors?
 - What timeframes would you choose? +- 5 years might be too much since it will then be difficult to find indicators available for so long prior/after the attack.
+
+# Important note
+It is important to notice that we will be merging this project with the one in the "Data Visualization" course, hence we will detail exactly which parts belong to one or another class. More coming soon.
