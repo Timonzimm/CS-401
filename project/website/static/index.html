@@ -8,14 +8,72 @@
 
 	<title>Interactive Map</title>
 	<link href="https://fonts.googleapis.com/css?family=Lato:300,400,700" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.min.css">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/chartist/0.11.0/chartist.min.css">
 	<link href="./style.css" rel="stylesheet">
 </head>
 
 <body>
-	<div id="country-details">
-		test
+	<div class="fixed-action-btn horizontal click-to-toggle" id="details-menu">
+		<a class="btn-floating btn-large black pulse modal-trigger" href="#country-details">
+			<i class="material-icons">menu</i>
+		</a>
 	</div>
+
 	<div id="map-holder"></div>
+
+	<div id="country-details" class="modal bottom-sheet">
+		<div class="modal-content">
+			<div class="row valign-wrapper">
+				<div class="col s1"></div>
+				<div class="col s3">
+					<h4>Name</h4>
+					<h3 id="country-name"></h3>
+					<br />
+					<br />
+					<h4>Region</h4>
+					<h3 id="country-region"></h3>
+					<br />
+					<br />
+					<h4>Income group</h4>
+					<h3 id="country-income"></h3>
+					<br />
+					<br />
+					<h4>Number of attacks</h4>
+					<h3 id="country-attacks"></h3>
+					<br />
+					<br />
+					<h4>Number of victims</h4>
+					<h3 id="country-victims"></h3>
+				</div>
+				<div class="col s3">
+					<h3>5 most common attack types</h3>
+					<ul id="most-common-types" class="collection">
+
+					</ul>
+				</div>
+				<div class="col s3">
+					<h3>5 most active terrorist groups</h3>
+					<ul id="most-active-groups" class="collection">
+					</ul>
+				</div>
+				<div class="col s3">
+					<h3>5 most common targets</h3>
+					<ul id="most-common-targets" class="collection">
+					</ul>
+				</div>
+				<div class="col s1"></div>
+			</div>
+			<div class="row valign-wrapper">
+				<div class="col s1"></div>
+				<div class="col s10">
+					<div class="ct-chart ct-double-octave" id="chart-attacks-victims"></div>
+				</div>
+				<div class="col s1"></div>
+			</div>
+		</div>
+	</div>
 	<script type="text/javascript" src="./bundle.js"></script>
 </body>
 

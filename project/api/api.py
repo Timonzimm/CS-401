@@ -19,6 +19,15 @@ def close_connection(exception):
     if db is not None:
         db.close()
 
+
+@app.route('/country/<string:country>')
+def informations_by_country(country):
+    """Returns the coordinates of all attacks of the given country."""
+    cur = get_db().execute('SELECT ShortName, Region, IncomeGroup FROM Country WHERE CountryCode="{}"'.format(country))
+    country_infos = cur.fetchall()
+    cur.close()
+    return jsonify(country_infos[0])
+
 @app.route('/coords/<string:country>')
 def attack_coordinates_by_country(country):
     """Returns the coordinates of all attacks of the given country."""
@@ -43,26 +52,26 @@ def all_attacks():
     cur.close()
     return jsonify(num_attacks)
 
-@app.route('/attacks/types/<string:country>')
-def attack_types_by_country(country):
+@app.route('/attacks/types/<string:country>/<int:num>')
+def attack_types_by_country(country, num):
     """Returns the types list with the corresponding number of attacks in descending order of the given country."""
-    cur = get_db().execute('SELECT attacktype1_txt, num_attacks FROM (SELECT attacktype1_txt, COUNT(attacktype1_txt) num_attacks FROM Attacks WHERE iso_code="{}" GROUP BY attacktype1_txt) ORDER BY num_attacks DESC'.format(country))
+    cur = get_db().execute('SELECT attacktype1_txt, num_attacks FROM (SELECT attacktype1_txt, COUNT(attacktype1_txt) num_attacks FROM Attacks WHERE iso_code="{}" GROUP BY attacktype1_txt) ORDER BY num_attacks DESC LIMIT {}'.format(country, num))
     attack_types = cur.fetchall()
     cur.close()
     return jsonify(attack_types)
 
-@app.route('/attacks/targets/<string:country>')
-def attack_targets_by_country(country):
+@app.route('/attacks/targets/<string:country>/<int:num>')
+def attack_targets_by_country(country, num):
     """Returns the targets list with the corresponding number of attacks in descending order of the given country."""
-    cur = get_db().execute('SELECT targtype1_txt, num_attacks FROM (SELECT targtype1_txt, COUNT(targtype1_txt) num_attacks FROM Attacks WHERE iso_code="{}" GROUP BY targtype1_txt) ORDER BY num_attacks DESC'.format(country))
+    cur = get_db().execute('SELECT targtype1_txt, num_attacks FROM (SELECT targtype1_txt, COUNT(targtype1_txt) num_attacks FROM Attacks WHERE iso_code="{}" GROUP BY targtype1_txt) ORDER BY num_attacks DESC LIMIT {}'.format(country, num))
     attack_targets = cur.fetchall()
     cur.close()
     return jsonify(attack_targets)
 
-@app.route('/attacks/perpetrators/<string:country>')
-def attack_perpetrators_by_country(country):
+@app.route('/attacks/perpetrators/<string:country>/<int:num>')
+def attack_perpetrators_by_country(country, num):
     """Returns the perpetrators list with the number of victims corresponding to their attacks in descending order of the given country."""
-    cur = get_db().execute('SELECT gname, num_victims FROM (SELECT gname, SUM(nkill) num_victims FROM Attacks WHERE iso_code="{}" GROUP BY gname) ORDER BY num_victims DESC LIMIT 20'.format(country))
+    cur = get_db().execute('SELECT gname, num_victims FROM (SELECT gname, SUM(nkill) num_victims FROM Attacks WHERE iso_code="{}" GROUP BY gname) ORDER BY num_victims DESC LIMIT {}'.format(country, num))
     attack_perpetrators = cur.fetchall()
     cur.close()
     return jsonify(attack_perpetrators)

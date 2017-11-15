@@ -28,25 +28,70 @@ svg rect {
 
 #map .active {
   cursor: default !important;
-  fill: #ECF0F1;
+  fill: white;
 }
 
 #map .inactive {
   opacity: 0.1;
 }
 
-#overlay {
-  stroke: blue;
-  fill: transparent;
+#country-details h3 {
+  display: inline;
+  font-variant: small-caps;
+  font-size: 1.7em !important;
+  font-weight: 400 !important;
 }
 
-#country-details {
+#country-details .collection h4 {
+  font-size: 1.2em !important;
+  margin-right: 0;
+}
+#country-details .collection h3 {
+  margin-right: 15px;
+}
+
+#country-details h4 {
+  margin-right: 15px;
+  display: inline !important;
+  color: #7f8c8d !important;
+  font-weight: 300 !important;
+  font-size: 1.4em !important;
+}
+
+.ct-series.ct-series-a .ct-line{
+  stroke: #8f0da4;
+}
+.ct-series.ct-series-a .ct-area{
+  fill: #8f0da4;
+}
+#country-details #country-attacks {
+  color: #8f0da4;
+}
+
+#country-details #country-victims {
+  color: #f05b4f;
+}
+
+#details-menu {
   display: none;
-  position: absolute;
-  background-color: #FFF;
-  left: 50px;
-  top: 50px;
-  padding: 50px;
-  width: 250px;
-  height: 100px;
+}
+
+.modal {
+  max-height: none !important;
+}
+
+.ct-label {
+  color: black;
+  font-weight: 400;
+  font-size: 1rem;
+}
+
+.collection .circle {
+  background-color: transparent !important;
+  border: 1px solid black;
+  color: black !important;
+  font-variant: normal;
+  font-style: normal;
+  font-weight: 700;
+  overflow: initial;
 }

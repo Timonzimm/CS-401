@@ -4,6 +4,17 @@ var $ = require('jquery');
 var countries = require('./countries.geo.json');
 var science = require('science');
 var _ = require('lodash');
+var Chartist = require('chartist');
+require('materialize-css');
+
+const {
+    formatNumber
+} = require('./utils.js')
+
+$('#country-details').modal({
+    ready: () => details_chart.resizeListener()
+});
+$('.collapsible').collapsible();
 
 API_SERVER = "http://127.0.0.1:5000"
 
@@ -17,6 +28,7 @@ h = 1250;
 var minZoom;
 var maxZoom;
 var active = d3.select(null);
+let details_chart = null;
 
 // DEFINE FUNCTIONS/OBJECTS
 // Define map projection
@@ -137,15 +149,36 @@ function clicked(d) {
 
 
     boxZoom(path.bounds(d), path.centroid(d), 50, () => {
-        axios.get(`${API_SERVER}/coords/${d.id}`, {
+        axios.all([
+                axios.get(`${API_SERVER}/coords/${d.id}`),
+                axios.get(`${API_SERVER}/country/${d.id}`),
+                axios.get(`${API_SERVER}/attacks/num_victims/${d.id}`),
+                axios.get(`${API_SERVER}/attacks/num_attacks/${d.id}`),
+                axios.get(`${API_SERVER}/attacks/types/${d.id}/5`),
+                axios.get(`${API_SERVER}/attacks/perpetrators/${d.id}/5`),
+                axios.get(`${API_SERVER}/attacks/targets/${d.id}/5`)
+            ], {
                 headers: {
                     'Access-Control-Allow-Origin': '*',
                 }
             })
-            .then((response) => {
+            .then(axios.spread(({
+                data: attacks
+            }, {
+                data: country_infos
+            }, {
+                data: num_victims
+            }, {
+                data: num_attacks
+            }, {
+                data: types
+            }, {
+                data: groups
+            }, {
+                data: targets
+            }) => {
                 // cast, drop undefined and duplicates up to 1 decimal in lat and long or 0 decimal if a lot of attacks
-                const data = response.data
-                const points = _.uniqBy(data.map(p => [parseFloat(p[0]), parseFloat(p[1])]).filter(p => p[0] && p[1]), p => [p[0].toFixed(1), p[1].toFixed(1)].join());
+                const points = _.uniqBy(attacks.map(p => [parseFloat(p[0]), parseFloat(p[1])]).filter(p => p[0] && p[1]), p => [p[0].toFixed(1), p[1].toFixed(1)].join());
 
                 const kdeX = science.stats.kde().sample(points.map(p => p[0]))
                 const kdeY = science.stats.kde().sample(points.map(p => p[1]))
@@ -171,20 +204,57 @@ function clicked(d) {
                     .data(densities)
                     .enter()
                     .append("circle")
-                    .attr("r", 5 / zoomScale)
-                    .style("stroke-width", 1 / zoomScale)
+                    .attr("r", 6 / zoomScale)
                     .attr("class", "mark")
                     .attr("cx", p => projection(p)[0])
                     .attr("cy", p => projection(p)[1])
-                    .attr("fill", p => d3.interpolateInferno((p[2] - min) / (max - min)))
-            })
+                    .attr("fill", p => d3.interpolatePlasma((p[2] - min) / (max - min)))
+
+                document.getElementById("country-name").innerText = country_infos[0];
+                document.getElementById("country-region").innerText = country_infos[1];
+                document.getElementById("country-income").innerText = country_infos[2];
+                document.getElementById("country-attacks").innerText = formatNumber(_.sumBy(num_attacks, a => a[1]));
+                document.getElementById("country-victims").innerText = formatNumber(_.sumBy(num_victims, v => v[1]));
+
+                document.getElementById("most-common-types").innerHTML = types.map((type, i) => `
+                <li class="collection-item">
+                    <h3>${formatNumber(type[1])}</h3>
+                    <h4>${type[0]}</h4>
+                </li>`).join("")
+                document.getElementById("most-active-groups").innerHTML = groups.map((group, i) => `
+                <li class="collection-item">
+                    <h3>${formatNumber(group[1])}</h3>
+                    <h4>${group[0]}</h4>
+                </li>`).join("")
+                document.getElementById("most-common-targets").innerHTML = targets.map((target, i) => `
+                <li class="collection-item">
+                    <h3>${formatNumber(target[1])}</h3>
+                    <h4>${target[0]}</h4>
+                </li>`).join("")
+
+                const data = {
+                    labels: num_attacks.map(a => a[0]),
+                    series: [
+                        num_attacks.map(a => a[1]), // purple/pink=#8f0da4
+                        num_victims.map(v => v[1]) // orange
+                    ]
+                };
+
+                const options = {
+                    width: "100%",
+                    showArea: true,
+                    showPoint: false,
+                    axisY: {
+                        onlyInteger: true
+                    }
+                }
+                details_chart = new Chartist.Line('#chart-attacks-victims', data, options);
+            }))
             .catch((error) => {
                 console.log(error);
             });
+        document.getElementById("details-menu").style.display = "inline";
     });
-
-
-    document.getElementById("country-details").style.display = "inline";
 }
 
 function reset() {
@@ -197,7 +267,7 @@ function reset() {
         .selectAll(".mark")
         .remove()
 
-    document.getElementById("country-details").style.display = "none";
+    document.getElementById("details-menu").style.display = "none";
 }
 
 // get map data
@@ -239,7 +309,7 @@ axios.get(`${API_SERVER}/attacks/countries`, {
         const interpolator = d3.scaleLinear()
             .range(["#ECF0F1", "#1D1D1D"])
             .interpolate(d3.interpolateLab);
-        //const interpolator = d3.interpolateLab("#ECF0F1", "#c0392b")
+        
         countries = countriesGroup
             .selectAll("path")
             .data(countries.features)

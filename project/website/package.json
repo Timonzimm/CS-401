@@ -11,11 +11,11 @@
   },
   "dependencies": {
     "axios": "^0.17.0",
+    "chartist": "^0.11.0",
     "d3": "^4.11.0",
-    "d3-contour": "^1.1.1",
     "jquery": "^3.2.1",
     "lodash": "^4.17.4",
-    "pdfast": "^0.2.0",
+    "materialize-css": "^0.100.2",
     "science": "^1.9.3",
     "topojson": "^3.0.2"
   }
