@@ -15,11 +15,12 @@
 </head>
 
 <body>
-	<div class="fixed-action-btn horizontal click-to-toggle" id="details-menu">
-		<a class="btn-floating btn-large black pulse modal-trigger" href="#country-details">
+	<div class="fixed-action-btn horizontal click-to-toggle" style="display:none;" id="details-menu">
+		<a class="btn-floating btn-large black pulse modal-trigger" data-target="country-details">
 			<i class="material-icons">menu</i>
 		</a>
 	</div>
+
 
 	<div id="map-holder"></div>
 
@@ -72,6 +73,11 @@
 				</div>
 				<div class="col s1"></div>
 			</div>
+		</div>
+		<div class="fixed-action-btn horizontal click-to-toggle" id="modal-close">
+			<a class="btn-floating btn-large red modal-action modal-close" href="#!">
+				<i class="material-icons">close</i>
+			</a>
 		</div>
 	</div>
 	<script type="text/javascript" src="./bundle.js"></script>

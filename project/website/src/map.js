@@ -14,9 +14,8 @@ const {
 $('#country-details').modal({
     ready: () => details_chart.resizeListener()
 });
-$('.collapsible').collapsible();
 
-API_SERVER = "http://127.0.0.1:5000"
+API_SERVER = "http://128.179.136.62:5000"
 
 // DEFINE VARIABLES
 // Define size of map group
@@ -215,7 +214,7 @@ function clicked(d) {
                 document.getElementById("country-income").innerText = country_infos[2];
                 document.getElementById("country-attacks").innerText = formatNumber(_.sumBy(num_attacks, a => a[1]));
                 document.getElementById("country-victims").innerText = formatNumber(_.sumBy(num_victims, v => v[1]));
-                console.log(types);
+
                 document.getElementById("most-common-types").innerHTML = types.map((type, i) => `
                 <li class="collection-item">
                     <h3>${formatNumber(type[1])}</h3>
@@ -231,7 +230,7 @@ function clicked(d) {
                     <h3>${formatNumber(target[1])}</h3>
                     <h4>${target[0] === 'Unknown' ? 'Unclassified' : target[0]}</h4>
                 </li>`).join("")
-                
+
                 const data = {
                     labels: num_attacks.map(a => a[0]),
                     series: [
@@ -309,7 +308,7 @@ axios.get(`${API_SERVER}/attacks/countries`, {
         const interpolator = d3.scaleLinear()
             .range(["#ECF0F1", "#1D1D1D"])
             .interpolate(d3.interpolateLab);
-        
+
         countries = countriesGroup
             .selectAll("path")
             .data(countries.features)
