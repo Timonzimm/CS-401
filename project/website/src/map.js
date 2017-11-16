@@ -215,23 +215,23 @@ function clicked(d) {
                 document.getElementById("country-income").innerText = country_infos[2];
                 document.getElementById("country-attacks").innerText = formatNumber(_.sumBy(num_attacks, a => a[1]));
                 document.getElementById("country-victims").innerText = formatNumber(_.sumBy(num_victims, v => v[1]));
-
+                console.log(types);
                 document.getElementById("most-common-types").innerHTML = types.map((type, i) => `
                 <li class="collection-item">
                     <h3>${formatNumber(type[1])}</h3>
-                    <h4>${type[0]}</h4>
+                    <h4>${type[0] === 'Unknown' ? 'Unclassified' : type[0]}</h4>
                 </li>`).join("")
                 document.getElementById("most-active-groups").innerHTML = groups.map((group, i) => `
                 <li class="collection-item">
                     <h3>${formatNumber(group[1])}</h3>
-                    <h4>${group[0]}</h4>
+                    <h4>${group[0] === 'Unknown' ? 'Unclaimed' : group[0]}</h4>
                 </li>`).join("")
                 document.getElementById("most-common-targets").innerHTML = targets.map((target, i) => `
                 <li class="collection-item">
                     <h3>${formatNumber(target[1])}</h3>
-                    <h4>${target[0]}</h4>
+                    <h4>${target[0] === 'Unknown' ? 'Unclassified' : target[0]}</h4>
                 </li>`).join("")
-
+                
                 const data = {
                     labels: num_attacks.map(a => a[0]),
                     series: [
