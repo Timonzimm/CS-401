@@ -1,11 +1,13 @@
-var d3 = require('d3');
-var axios = require('axios');
-var $ = require('jquery');
-var countries = require('./countries.geo.json');
-var science = require('science');
-var _ = require('lodash');
-var Chartist = require('chartist');
-require('materialize-css');
+var d3 = require('d3')
+var axios = require('axios')
+var $ = require('jquery')
+var countries = require('./countries.geo.json')
+var science = require('science')
+var _ = require('lodash')
+var Chartist = require('chartist')
+var noUiSlider = require('nouislider')
+var wnumb = require('wnumb')
+require('materialize-css')
 
 const {
     formatNumber
@@ -13,8 +15,9 @@ const {
 
 $('#country-details').modal({
     ready: () => details_chart.resizeListener()
-});
-$('#help-modal').modal();
+})
+$('#help-modal').modal()
+$('select').material_select()
 
 API_SERVER = "http://127.0.0.1:5000"
 
@@ -96,35 +99,35 @@ var svg = d3
     .attr("height", $("#map-holder").height())
 
 function boxZoom(box, centroid, paddingPerc, callback) {
-    minXY = box[0];
-    maxXY = box[1];
+    minXY = box[0]
+    maxXY = box[1]
     // find size of map area defined
-    zoomWidth = Math.abs(minXY[0] - maxXY[0]);
-    zoomHeight = Math.abs(minXY[1] - maxXY[1]);
+    zoomWidth = Math.abs(minXY[0] - maxXY[0])
+    zoomHeight = Math.abs(minXY[1] - maxXY[1])
     // find midpoint of map area defined
-    zoomMidX = centroid[0];
-    zoomMidY = centroid[1];
+    zoomMidX = centroid[0]
+    zoomMidY = centroid[1]
     // increase map area to include padding
-    zoomWidth = zoomWidth * (1 + paddingPerc / 100);
-    zoomHeight = zoomHeight * (1 + paddingPerc / 100);
+    zoomWidth = zoomWidth * (1 + paddingPerc / 100)
+    zoomHeight = zoomHeight * (1 + paddingPerc / 100)
     // find scale required for area to fill svg
-    maxXscale = $("#map-holder").width() / zoomWidth;
-    maxYscale = $("#map-holder").height() / zoomHeight;
-    zoomScale = Math.min(maxXscale, maxYscale);
+    maxXscale = $("#map-holder").width() / zoomWidth
+    maxYscale = $("#map-holder").height() / zoomHeight
+    zoomScale = Math.min(maxXscale, maxYscale)
     // handle some edge cases
     // limit to max zoom (handles tiny countries)
-    zoomScale = Math.min(zoomScale, maxZoom);
+    zoomScale = Math.min(zoomScale, maxZoom)
     // limit to min zoom (handles large countries and countries that span the date line)
-    zoomScale = Math.max(zoomScale, minZoom);
+    zoomScale = Math.max(zoomScale, minZoom)
     // Find screen pixel equivalent once scaled
-    offsetX = zoomScale * zoomMidX;
-    offsetY = zoomScale * zoomMidY;
+    offsetX = zoomScale * zoomMidX
+    offsetY = zoomScale * zoomMidY
     // Find offset to centre, making sure no gap at left or top of holder
-    dleft = Math.min(0, $("svg").width() / 2 - offsetX);
-    dtop = Math.min(0, $("svg").height() / 2 - offsetY);
+    dleft = Math.min(0, $("svg").width() / 2 - offsetX)
+    dtop = Math.min(0, $("svg").height() / 2 - offsetY)
     // Make sure no gap at bottom or right of holder
-    dleft = Math.max($("svg").width() - w * zoomScale, dleft);
-    dtop = Math.max($("svg").height() - h * zoomScale, dtop);
+    dleft = Math.max($("svg").width() - w * zoomScale, dleft)
+    dtop = Math.max($("svg").height() - h * zoomScale, dtop)
     // set zoom
     svg
         .transition()
@@ -133,15 +136,15 @@ function boxZoom(box, centroid, paddingPerc, callback) {
             zoom.transform,
             d3.zoomIdentity.translate(dleft, dtop).scale(zoomScale)
         )
-        .on("end", callback);
+        .on("end", callback)
 }
 
 function clicked(d) {
-    if (active.node() === this) return reset();
-    countries.classed("inactive", true);
-    active.classed("active", false);
-    active = d3.select(this).classed("active", true);
-    active.classed("inactive", false);
+    if (active.node() === this) return reset()
+    countries.classed("inactive", true)
+    active.classed("active", false)
+    active = d3.select(this).classed("active", true)
+    active.classed("inactive", false)
 
     countriesGroup
         .selectAll(".mark")
@@ -177,8 +180,12 @@ function clicked(d) {
             }, {
                 data: targets
             }) => {
-                // cast, drop undefined and duplicates up to 1 decimal in lat and long or 0 decimal if a lot of attacks
-                const points = _.uniqBy(attacks.map(p => [parseFloat(p[0]), parseFloat(p[1])]).filter(p => p[0] && p[1]), p => [p[0].toFixed(1), p[1].toFixed(1)].join());
+                const points = _.uniqBy(
+                    attacks
+                    .map(p => [parseFloat(p[0]), parseFloat(p[1])]) // cast to float
+                    .filter(p => p[0] && p[1]), // drop undefined
+                    p => [p[0].toFixed(1), p[1].toFixed(1)].join() // drop duplicates up to 1 decimal in lat and long
+                )
 
                 const kdeX = science.stats.kde().sample(points.map(p => p[0]))
                 const kdeY = science.stats.kde().sample(points.map(p => p[1]))
@@ -210,11 +217,11 @@ function clicked(d) {
                     .attr("cy", p => projection(p)[1])
                     .attr("fill", p => d3.interpolatePlasma((p[2] - min) / (max - min)))
 
-                document.getElementById("country-name").innerText = country_infos[0];
-                document.getElementById("country-region").innerText = country_infos[1];
-                document.getElementById("country-income").innerText = country_infos[2];
-                document.getElementById("country-attacks").innerText = formatNumber(_.sumBy(num_attacks, a => a[1]));
-                document.getElementById("country-victims").innerText = formatNumber(_.sumBy(num_victims, v => v[1]));
+                document.getElementById("country-name").innerText = country_infos[0]
+                document.getElementById("country-region").innerText = country_infos[1]
+                document.getElementById("country-income").innerText = country_infos[2]
+                document.getElementById("country-attacks").innerText = formatNumber(_.sumBy(num_attacks, a => a[1]))
+                document.getElementById("country-victims").innerText = formatNumber(_.sumBy(num_victims, v => v[1]))
 
                 document.getElementById("most-common-types").innerHTML = types.map((type, i) => `
                 <li class="collection-item">
@@ -248,7 +255,35 @@ function clicked(d) {
                         onlyInteger: true
                     }
                 }
-                details_chart = new Chartist.Line('#chart-attacks-victims', data, options);
+                details_chart = new Chartist.Line('#chart-attacks-victims', data, options)
+
+                $('#test-slider').empty();
+                $('#test-slider').removeAttr('class');
+                noUiSlider.create(document.getElementById('test-slider'), {
+                    start: [parseInt(num_attacks[0][0]), parseInt(num_attacks[num_attacks.length - 1][0])],
+                    connect: true,
+                    step: 1,
+                    orientation: 'horizontal', // 'horizontal' or 'vertical'
+                    range: {
+                        'min': parseInt(num_attacks[0][0]),
+                        'max': parseInt(num_attacks[num_attacks.length - 1])
+                    },
+                    tooltips: [wnumb({
+                        decimals: 0,
+                        prefix: 'From '
+                    }), wnumb({
+                        decimals: 0,
+                        prefix: 'To '
+                    })]
+                }).on('update', function (_, _, val) {
+                    details_chart.update({
+                        labels: num_attacks.filter(a => a[0] >= val[0] && a[0] <= val[1]).map(a => a[0]),
+                        series: [
+                            num_attacks.filter(a => a[0] >= val[0] && a[0] <= val[1]).map(a => a[1]), // purple/pink=#8f0da4
+                            num_victims.filter(v => v[0] >= val[0] && v[0] <= val[1]).map(v => v[1]) // orange
+                        ]
+                    })
+                })
             }))
             .catch((error) => {
                 console.log(error);
