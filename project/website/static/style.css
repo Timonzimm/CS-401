@@ -2,7 +2,6 @@ body {
   margin: 0;
   font-family: 'Lato', sans-serif;
   font-weight: 300;
-  font-size: 17px;
   overflow: hidden;
   background-color: #ECF0F1;
 }
@@ -38,12 +37,12 @@ svg rect {
 #country-details h3 {
   display: inline;
   font-variant: small-caps;
-  font-size: 1.7em !important;
+  font-size: 1.4em !important;
   font-weight: 400 !important;
 }
 
 #country-details .collection h4 {
-  font-size: 1.2em !important;
+  font-size: 1em !important;
   margin-right: 0;
 }
 
@@ -56,7 +55,7 @@ svg rect {
   display: inline !important;
   color: #7f8c8d !important;
   font-weight: 300 !important;
-  font-size: 1.4em !important;
+  font-size: 1.2em !important;
 }
 
 .ct-series.ct-series-a .ct-line {
@@ -96,4 +95,8 @@ svg rect {
   font-style: normal;
   font-weight: 700;
   overflow: initial;
+}
+
+.noUi-target, .noUi-connect{
+  background: white;
 }
