@@ -12,13 +12,13 @@
   "dependencies": {
     "axios": "^0.17.0",
     "chartist": "^0.11.0",
+    "chartist-plugin-legend": "^0.6.2",
+    "chartist-plugin-tooltips": "^0.0.17",
     "d3": "^4.11.0",
     "jquery": "^3.2.1",
     "lodash": "^4.17.4",
     "materialize-css": "^0.100.2",
-    "nouislider": "^10.1.0",
     "science": "^1.9.3",
-    "topojson": "^3.0.2",
-    "wnumb": "^1.1.0"
+    "topojson": "^3.0.2"
   }
 }

@@ -5,66 +5,66 @@ var countries = require('./countries.geo.json')
 var science = require('science')
 var _ = require('lodash')
 var Chartist = require('chartist')
-var noUiSlider = require('nouislider')
-var wnumb = require('wnumb')
+require('chartist-plugin-legend')
+require('chartist-plugin-tooltips')
 require('materialize-css')
 
 const {
     formatNumber
 } = require('./utils.js')
 
-$('#country-details').modal({
+$('#details-modal').modal()
+$('#help-modal').modal()
+$('#charts-modal').modal({
     ready: () => details_chart.resizeListener()
 })
-$('#help-modal').modal()
-$('select').material_select()
 
-API_SERVER = "http://127.0.0.1:5000"
+API_SERVER = "http://128.179.139.248:5000"
 
 // DEFINE VARIABLES
 // Define size of map group
 // Full world map is 2:1 ratio
 // Using 12:5 because we will crop top and bottom of map
-w = 3000;
-h = 1250;
+const w = 3000
+const h = 1250
 // variables for catching min and max zoom factors
-var minZoom;
-var maxZoom;
-var active = d3.select(null);
-let details_chart = null;
+var minZoom
+var maxZoom
+var active = d3.select(null)
+let details_chart = null
 
 // DEFINE FUNCTIONS/OBJECTS
 // Define map projection
 var projection = d3
     .geoNaturalEarth1()
     .scale([w / (2 * Math.PI)]) // scale to fit group width
-    .translate([w / 2.1, h / 1.7]);
+    .translate([w / 2.1, h / 1.7])
 
 // Define map path
 var path = d3
     .geoPath()
-    .projection(projection);
+    .projection(projection)
 
 // Create function to apply zoom to countriesGroup
 function zoomed() {
     t = d3
         .event
-        .transform;
+        .transform
     countriesGroup
-        .attr("transform", "translate(" + [t.x, t.y] + ")scale(" + t.k + ")");
+        .attr("transform", "translate(" + [t.x, t.y] + ")scale(" + t.k + ")")
 }
 
 // Define map zoom behaviour
 var zoom = d3
     .zoom()
-    .on("zoom", zoomed);
+    .on("zoom", zoomed)
 
 // Function that calculates zoom/pan limits and sets zoom to default value 
 function initiateZoom() {
     // Define a "minzoom" whereby the "Countries" is as small possible without leaving white space at top/bottom or sides
-    minZoom = Math.max($("#map-holder").width() / w, $("#map-holder").height() / h);
+    minZoom = Math.max($("#map-holder").width() / w, $("#map-holder").height() / h)
     // set max zoom to a suitable factor of this value
-    maxZoom = 20 * minZoom;
+    maxZoom = 20 * minZoom
     // set extent of zoom to chosen values
     // set translate extent so that panning can't cause map to move out of viewport
     zoom
@@ -72,12 +72,12 @@ function initiateZoom() {
         .translateExtent([
             [0, 0],
             [w, h]
-        ]);
+        ])
     // define X and Y offset for centre of map to be shown in centre of holder
-    midX = ($("#map-holder").width() - minZoom * w) / 2;
-    midY = ($("#map-holder").height() - minZoom * h) / 2;
+    midX = ($("#map-holder").width() - minZoom * w) / 2
+    midY = ($("#map-holder").height() - minZoom * h) / 2
     // change zoom transform to min zoom and centre offsets
-    svg.transition().duration(500).call(zoom.transform, d3.zoomIdentity.translate(midX, midY).scale(minZoom));
+    svg.transition().duration(500).call(zoom.transform, d3.zoomIdentity.translate(midX, midY).scale(minZoom))
 }
 
 
@@ -86,8 +86,8 @@ $(window).resize(function () {
     // Resize SVG
     svg
         .attr("width", $("#map-holder").width())
-        .attr("height", $("#map-holder").height());
-    reset();
+        .attr("height", $("#map-holder").height())
+    reset()
 });
 
 // create an SVG
@@ -157,9 +157,9 @@ function clicked(d) {
                 axios.get(`${API_SERVER}/country/${d.id}`),
                 axios.get(`${API_SERVER}/attacks/num_victims/${d.id}`),
                 axios.get(`${API_SERVER}/attacks/num_attacks/${d.id}`),
-                axios.get(`${API_SERVER}/attacks/types/${d.id}/5`),
-                axios.get(`${API_SERVER}/attacks/perpetrators/${d.id}/5`),
-                axios.get(`${API_SERVER}/attacks/targets/${d.id}/5`)
+                axios.get(`${API_SERVER}/attacks/types/${d.id}`),
+                axios.get(`${API_SERVER}/attacks/perpetrators/${d.id}`),
+                axios.get(`${API_SERVER}/attacks/targets/${d.id}`)
             ], {
                 headers: {
                     'Access-Control-Allow-Origin': '*',
@@ -217,23 +217,24 @@ function clicked(d) {
                     .attr("cy", p => projection(p)[1])
                     .attr("fill", p => d3.interpolatePlasma((p[2] - min) / (max - min)))
 
-                document.getElementById("country-name").innerText = country_infos[0]
+                Array.prototype.forEach.call(document.getElementsByClassName("country-name"), e => e.innerText = country_infos[0])
                 document.getElementById("country-region").innerText = country_infos[1]
                 document.getElementById("country-income").innerText = country_infos[2]
                 document.getElementById("country-attacks").innerText = formatNumber(_.sumBy(num_attacks, a => a[1]))
                 document.getElementById("country-victims").innerText = formatNumber(_.sumBy(num_victims, v => v[1]))
+                document.getElementById("country-range").innerText = `${num_attacks[0][0]} - ${num_attacks[num_attacks.length - 1][0]}`
 
-                document.getElementById("most-common-types").innerHTML = types.map((type, i) => `
+                document.getElementById("most-common-types").innerHTML = types.slice(0, 5).map((type, i) => `
                 <li class="collection-item">
                     <h3>${formatNumber(type[1])}</h3>
                     <h4>${type[0] === 'Unknown' ? 'Unclassified' : type[0]}</h4>
                 </li>`).join("")
-                document.getElementById("most-active-groups").innerHTML = groups.map((group, i) => `
+                document.getElementById("most-active-groups").innerHTML = groups.slice(0, 5).map((group, i) => `
                 <li class="collection-item">
                     <h3>${formatNumber(group[1])}</h3>
                     <h4>${group[0] === 'Unknown' ? 'Unclaimed' : group[0]}</h4>
                 </li>`).join("")
-                document.getElementById("most-common-targets").innerHTML = targets.map((target, i) => `
+                document.getElementById("most-common-targets").innerHTML = targets.slice(0, 5).map((target, i) => `
                 <li class="collection-item">
                     <h3>${formatNumber(target[1])}</h3>
                     <h4>${target[0] === 'Unknown' ? 'Unclassified' : target[0]}</h4>
@@ -250,45 +251,27 @@ function clicked(d) {
                 const options = {
                     width: "100%",
                     showArea: true,
-                    showPoint: false,
+                    showPoint: true,
                     axisY: {
                         onlyInteger: true
-                    }
+                    },
+                    lineSmooth: Chartist.Interpolation.monotoneCubic({
+                        fillHoles: false
+                    }),
+                    plugins: [
+                        Chartist.plugins.legend({
+                            legendNames: ['Number of attacks', 'Number of victims']
+                        }),
+                        Chartist.plugins.tooltip()
+                    ]
                 }
                 details_chart = new Chartist.Line('#chart-attacks-victims', data, options)
-
-                $('#test-slider').empty();
-                $('#test-slider').removeAttr('class');
-                noUiSlider.create(document.getElementById('test-slider'), {
-                    start: [parseInt(num_attacks[0][0]), parseInt(num_attacks[num_attacks.length - 1][0])],
-                    connect: true,
-                    step: 1,
-                    orientation: 'horizontal', // 'horizontal' or 'vertical'
-                    range: {
-                        'min': parseInt(num_attacks[0][0]),
-                        'max': parseInt(num_attacks[num_attacks.length - 1])
-                    },
-                    tooltips: [wnumb({
-                        decimals: 0,
-                        prefix: 'From '
-                    }), wnumb({
-                        decimals: 0,
-                        prefix: 'To '
-                    })]
-                }).on('update', function (_, _, val) {
-                    details_chart.update({
-                        labels: num_attacks.filter(a => a[0] >= val[0] && a[0] <= val[1]).map(a => a[0]),
-                        series: [
-                            num_attacks.filter(a => a[0] >= val[0] && a[0] <= val[1]).map(a => a[1]), // purple/pink=#8f0da4
-                            num_victims.filter(v => v[0] >= val[0] && v[0] <= val[1]).map(v => v[1]) // orange
-                        ]
-                    })
-                })
             }))
             .catch((error) => {
-                console.log(error);
+                console.log(error)
             });
-        document.getElementById("details-menu").style.display = "inline";
+        $('#details-button').removeClass('disabled')
+        $('#charts-button').removeClass('disabled')
     });
 }
 
@@ -302,7 +285,8 @@ function reset() {
         .selectAll(".mark")
         .remove()
 
-    document.getElementById("details-menu").style.display = "none";
+    $('#details-button').addClass('disabled')
+    $('#charts-button').addClass('disabled')
 }
 
 // get map data
