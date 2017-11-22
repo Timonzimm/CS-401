@@ -70,8 +70,8 @@ def attack_targets_by_country(country, num):
 
 @app.route('/attacks/perpetrators/<string:country>/<int:num>')
 def attack_perpetrators_by_country(country, num):
-    """Returns the perpetrators list with the number of victims corresponding to their attacks in descending order of the given country."""
-    cur = get_db().execute('SELECT gname, num_victims FROM (SELECT gname, SUM(nkill) num_victims FROM Attacks WHERE iso_code="{}" GROUP BY gname) ORDER BY num_victims DESC LIMIT {}'.format(country, num))
+    """Returns the perpetrators list with the number of attacks corresponding to their attacks in descending order of the given country."""
+    cur = get_db().execute('SELECT gname, num_attacks FROM (SELECT gname, COUNT(gname) num_attacks FROM Attacks WHERE iso_code="{}" GROUP BY gname) ORDER BY num_attacks DESC LIMIT {}'.format(country, num))
     attack_perpetrators = cur.fetchall()
     cur.close()
     return jsonify(attack_perpetrators)
