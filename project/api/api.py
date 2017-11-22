@@ -92,6 +92,13 @@ def num_attacks_per_year_by_country(country):
     cur.close()
     return jsonify(num_attacks)
 
+@app.route('/development/electric_consumption/<string:country>')
+def electric_consumption_per_year_by_country(country):
+    """Returns the electric consumption (kWh per capita) per year of the given country."""
+    cur = get_db().execute('SELECT Year, Value FROM Indicators WHERE CountryCode="{}" AND IndicatorCode="EG.USE.ELEC.KH.PC"'.format(country))
+    electric_consumption = cur.fetchall()
+    cur.close()
+    return jsonify(electric_consumption)
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5000, debug=True, threaded=True)
