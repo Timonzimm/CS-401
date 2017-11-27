@@ -62,5 +62,9 @@ All of these will be done through a "Data Story" type of website:
 - Alternative policies/techniques to compare with "sane" countries and prune other factors?
 - What timeframes would you choose? +- 5 years might be too much since it will then be difficult to find indicators available for so long prior/after the attack.
 
+# Notebook for milestone 2
+[Notebook](https://github.com/Timonzimm/CS-401/blob/master/project/report/report.ipynb)
+
 # Important note
 It is important to notice that we will be merging this project with the one in the "Data Visualization" course, hence we will detail exactly which parts belong to one or another class. More coming soon.
+
