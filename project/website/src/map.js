@@ -19,7 +19,7 @@ $('#charts-modal').modal({
     ready: () => details_chart.resizeListener()
 })
 
-API_SERVER = "http://128.179.139.248:5000"
+API_SERVER = "http://127.0.0.1:5000"
 
 // DEFINE VARIABLES
 // Define size of map group
