@@ -51,19 +51,20 @@ All of these will be done through a "Data Story" type of website:
 4. We would plot several data for the indicators to give insights about the trend shift that occured due to the attack.
 5. Try to come up with an estimated recovery-time for the country based on the criterions chosen, and compare with indicators aftermath.
 
-# A list of internal milestones up until project milestone 2
-|Week #|Expected task|
-|---|---|
-|Week 1<br>31.10-07.11|Data merging, cleaning, then select some typical indicators (social and economic) available for each timeframe (e.g. +- 5 years) of each attack. Try to come up with a clever strategy regarding policy chosen to compare countries.|
-|Week 2<br>07.11-14.11|Develop the webserver, template of the map(s) and interface design. Try to come up with a clever formula to approximate the recovery-time.|
-|Week 3<br>14.11-21.11|Link the front-end/back-end with the database to have a website up an running. Fix, tweak and adapt interfaces.|
-|Week 4<br>21.11-28.11|Analyze our results and visualizations. Use our website and seek out for potential alternative explanations in *historical events*, such as economic crisis, revolutions, and so on.|
+# Tasks for milestone 2
+|Week&nbsp;#|Expected task|
+|-----|-----|
+|Week&nbsp;1|Data merging, cleaning, then select some typical indicators (social and economic) available for each timeframe (e.g. +- 5 years) of each attack. Try to come up with a clever strategy regarding policy chosen to compare countries.|
+|Week&nbsp;2|Develop the webserver, template of the map(s) and interface design. Try to come up with a clever formula to approximate the recovery-time.|
+|Week&nbsp;3|Link the front-end/back-end with the database to have a website up an running. Fix, tweak and adapt interfaces.|
+|Week&nbsp;4|Analyze our results and visualizations. Use our website and seek out for potential alternative explanations in *historical events*, such as economic crisis, revolutions, and so on.|
 
-# Questions for TA
-- What do you think about the idea of correlating terrorist attacks with development indicators?
-- What would be the best policy from your point of view? After thinking it through, number 4 seems like the best option to automate such a website.
-- Alternative policies/techniques to compare with "sane" countries and prune other factors?
-- What timeframes would you choose? +- 5 years might be too much since it will then be difficult to find indicators available for so long prior/after the attack.
+# Tasks for milestone 3
+|Week&nbsp;#|Expected task|
+|-----|-----|
+|Week&nbsp;1|Add the different development indicators to the website visualization having in mind the following questions: How to show them? What kind of plot is appropriate? Should we present them along with the attack indicators or not? Why? How to show the correlation with the attacks without under-/over-estimate the results?|
+|Week&nbsp;2|Think about the story that will come in the website, write the abstract, and the guidelines about how to discover/learn from the content we provide.|
+|Week&nbsp;3|Set up the website in terms of logistics (server, web host or script, etc.). Think about the poster: how to structure it and what should be said. |
 
 # Important note
 It is important to notice that we will be merging this project with the one in the "Data Visualization" course, hence we will detail exactly which parts belong to one or another class. More coming soon.
