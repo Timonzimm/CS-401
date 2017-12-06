@@ -92,13 +92,173 @@ def num_attacks_per_year_by_country(country):
     cur.close()
     return jsonify(num_attacks)
 
-@app.route('/development/electric_consumption/<string:country>')
+# Economic development indicators
+
+@app.route('/development/economy/electric_consumption/<string:country>')
 def electric_consumption_per_year_by_country(country):
     """Returns the electric consumption (kWh per capita) per year of the given country."""
     cur = get_db().execute('SELECT Year, Value FROM Indicators WHERE CountryCode="{}" AND IndicatorCode="EG.USE.ELEC.KH.PC"'.format(country))
     electric_consumption = cur.fetchall()
     cur.close()
     return jsonify(electric_consumption)
+
+@app.route('/development/economy/co2_emissions/<string:country>')
+def co2_emissions_per_year_by_country(country):
+    """Returns the CO2 emissions (in kt) per year of the given country."""
+    cur = get_db().execute('SELECT Year, Value FROM Indicators WHERE CountryCode="{}" AND IndicatorCode="EN.ATM.CO2E.KT"'.format(country))
+    co2_emissions = cur.fetchall()
+    cur.close()
+    return jsonify(co2_emissions)
+
+@app.route('/development/economy/total_reserves/<string:country>')
+def total_reserves_per_year_by_country(country):
+    """Returns the total reserves (minus gold) in US$ per year of the given country."""
+    cur = get_db().execute('SELECT Year, Value FROM Indicators WHERE CountryCode="{}" AND IndicatorCode="FI.RES.XGLD.CD"'.format(country))
+    total_reserves = cur.fetchall()
+    cur.close()
+    return jsonify(total_reserves)
+
+@app.route('/development/economy/arm_imports/<string:country>')
+def arm_imports_per_year_by_country(country):
+    """Returns the arm imports (SIPRI) per year of the given country."""
+    cur = get_db().execute('SELECT Year, Value FROM Indicators WHERE CountryCode="{}" AND IndicatorCode="MS.MIL.MPRT.KD"'.format(country))
+    arm_imports = cur.fetchall()
+    cur.close()
+    return jsonify(arm_imports)
+
+@app.route('/development/economy/arm_exports/<string:country>')
+def arm_exports_per_year_by_country(country):
+    """Returns the arm exports (SIPRI) per year of the given country."""
+    cur = get_db().execute('SELECT Year, Value FROM Indicators WHERE CountryCode="{}" AND IndicatorCode="MS.MIL.XPRT.KD"'.format(country))
+    arm_exports = cur.fetchall()
+    cur.close()
+    return jsonify(arm_exports)
+
+@app.route('/development/economy/gs_imports/<string:country>')
+def gs_imports_per_year_by_country(country):
+    """Returns the good and service imports (annual % growth) per year of the given country."""
+    cur = get_db().execute('SELECT Year, Value FROM Indicators WHERE CountryCode="{}" AND IndicatorCode="NE.IMP.GNFS.KD.ZG"'.format(country))
+    gs_imports = cur.fetchall()
+    cur.close()
+    return jsonify(gs_imports)
+
+@app.route('/development/economy/gs_exports/<string:country>')
+def gs_exports_per_year_by_country(country):
+    """Returns the good and service exports (annual % growth) per year of the given country."""
+    cur = get_db().execute('SELECT Year, Value FROM Indicators WHERE CountryCode="{}" AND IndicatorCode="NE.EXP.GNFS.KD.ZG"'.format(country))
+    gs_exports = cur.fetchall()
+    cur.close()
+    return jsonify(gs_exports)
+
+@app.route('/development/economy/gdp/<string:country>')
+def gdp_per_year_by_country(country):
+    """Returns the GDP (annual % growth) per year of the given country."""
+    cur = get_db().execute('SELECT Year, Value FROM Indicators WHERE CountryCode="{}" AND IndicatorCode="NY.GDP.MKTP.KD.ZG"'.format(country))
+    gdp = cur.fetchall()
+    cur.close()
+    return jsonify(gdp)
+
+@app.route('/development/economy/gni/<string:country>')
+def gni_per_year_by_country(country):
+    """Returns the GNI (annual % growth) per year of the given country."""
+    cur = get_db().execute('SELECT Year, Value FROM Indicators WHERE CountryCode="{}" AND IndicatorCode="NY.GNP.MKTP.KD.ZG"'.format(country))
+    gni = cur.fetchall()
+    cur.close()
+    return jsonify(gni)
+
+# Social health development indicators
+
+@app.route('/development/social_health/mortality_rate_under_5/<string:country>')
+def mortality_rate_under_5_per_year_by_country(country):
+    """Returns the mortality rate under 5 (per 1,000 people) per year of the given country."""
+    cur = get_db().execute('SELECT Year, Value FROM Indicators WHERE CountryCode="{}" AND IndicatorCode="SH.DYN.MORT"'.format(country))
+    mortality_rate_under_5 = cur.fetchall()
+    cur.close()
+    return jsonify(mortality_rate_under_5)
+
+@app.route('/development/social_health/hospital_beds/<string:country>')
+def hospital_beds_per_year_by_country(country):
+    """Returns the number of hospital beds (per 1,000 people) per year of the given country."""
+    cur = get_db().execute('SELECT Year, Value FROM Indicators WHERE CountryCode="{}" AND IndicatorCode="SH.MED.BEDS.ZS"'.format(country))
+    hospital_beds = cur.fetchall()
+    cur.close()
+    return jsonify(hospital_beds)
+
+@app.route('/development/social_health/birth_rate/<string:country>')
+def birth_rate_per_year_by_country(country):
+    """Returns the birth rate (per 1,000 people) per year of the given country."""
+    cur = get_db().execute('SELECT Year, Value FROM Indicators WHERE CountryCode="{}" AND IndicatorCode="SP.DYN.CBRT.IN"'.format(country))
+    birth_rate = cur.fetchall()
+    cur.close()
+    return jsonify(birth_rate)
+
+@app.route('/development/social_health/death_rate/<string:country>')
+def death_rate_per_year_by_country(country):
+    """Returns the death rate (per 1,000 people) per year of the given country."""
+    cur = get_db().execute('SELECT Year, Value FROM Indicators WHERE CountryCode="{}" AND IndicatorCode="SP.DYN.CDRT.IN"'.format(country))
+    death_rate = cur.fetchall()
+    cur.close()
+    return jsonify(death_rate)
+
+# Population development indicators
+
+@app.route('/development/social_health/population_0_14/<string:country>')
+def population_0_14_per_year_by_country(country):
+    """Returns the population aged between 0-14 (in %) per year of the given country."""
+    cur = get_db().execute('SELECT Year, Value FROM Indicators WHERE CountryCode="{}" AND IndicatorCode="SP.POP.0014.TO.ZS"'.format(country))
+    population_0_14 = cur.fetchall()
+    cur.close()
+    return jsonify(population_0_14)
+
+@app.route('/development/social_health/population_15_64/<string:country>')
+def population_15_64_per_year_by_country(country):
+    """Returns the population aged between 15-64 (in %) per year of the given country."""
+    cur = get_db().execute('SELECT Year, Value FROM Indicators WHERE CountryCode="{}" AND IndicatorCode="SP.POP.1564.TO.ZS"'.format(country))
+    population_15_64 = cur.fetchall()
+    cur.close()
+    return jsonify(population_15_64)
+
+@app.route('/development/social_health/population_65_up/<string:country>')
+def population_65_up_per_year_by_country(country):
+    """Returns the population aged between 65 and above (in %) per year of the given country."""
+    cur = get_db().execute('SELECT Year, Value FROM Indicators WHERE CountryCode="{}" AND IndicatorCode="SP.POP.65UP.TO.ZS"'.format(country))
+    population_65_up = cur.fetchall()
+    cur.close()
+    return jsonify(population_65_up)
+
+@app.route('/development/social_health/population_growth/<string:country>')
+def population_growth_per_year_by_country(country):
+    """Returns the population annual % growth per year of the given country."""
+    cur = get_db().execute('SELECT Year, Value FROM Indicators WHERE CountryCode="{}" AND IndicatorCode="SP.POP.GROW"'.format(country))
+    population_growth = cur.fetchall()
+    cur.close()
+    return jsonify(population_growth)
+
+# Wealth development indicators
+
+@app.route('/development/wealth/renewable_energy_cons/<string:country>')
+def renewable_energy_cons_per_year_by_country(country):
+    """Returns the renewable energy consumption (% of total final energy consumption) per year of the given country."""
+    cur = get_db().execute('SELECT Year, Value FROM Indicators WHERE CountryCode="{}" AND IndicatorCode="EG.FEC.RNEW.ZS"'.format(country))
+    renewable_energy_cons = cur.fetchall()
+    cur.close()
+    return jsonify(renewable_energy_cons)
+
+@app.route('/development/wealth/air_transport/<string:country>')
+def air_transport_per_year_by_country(country):
+    """Returns the number of passenger carried per year of the given country."""
+    cur = get_db().execute('SELECT Year, Value FROM Indicators WHERE CountryCode="{}" AND IndicatorCode="IS.AIR.PSGR"'.format(country))
+    air_transport = cur.fetchall()
+    cur.close()
+    return jsonify(air_transport)
+
+@app.route('/development/wealth/internet_users/<string:country>')
+def internet_users_per_year_by_country(country):
+    """Returns the internet users (per 1,000 people) per year of the given country."""
+    cur = get_db().execute('SELECT Year, Value FROM Indicators WHERE CountryCode="{}" AND IndicatorCode="IT.NET.USER.P2"'.format(country))
+    internet_users = cur.fetchall()
+    cur.close()
+    return jsonify(internet_users)
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5000, debug=True, threaded=True)
