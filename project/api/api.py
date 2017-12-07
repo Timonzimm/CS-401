@@ -92,6 +92,21 @@ def num_attacks_per_year_by_country(country):
     cur.close()
     return jsonify(num_attacks)
 
+@app.route('/score/<string:country>')
+def score_per_year_by_country(country):
+    """Returns the Global Terrorism Index (GTI) per year of the given country."""
+    cur = get_db().execute('''SELECT iyear, (
+    1*COUNT(*)
+    + 3*SUM(nkill)
+    + 0.5*SUM(nwound)
+    + 2*SUM(case propextent when 1.0 then 1 else 0 end)
+    + 2*SUM(case propextent when 2.0 then 1 else 0 end)
+    + 2*SUM(case propextent when 3.0 then 1 else 0 end)
+    + 2*SUM(case propextent when 4.0 then 1 else 0 end)) FROM Attacks WHERE iso_code="{}" GROUP BY iyear''' .format(country))
+    score = cur.fetchall()
+    cur.close()
+    return jsonify(score)
+
 # Economic development indicators
 
 @app.route('/development/economy/electric_consumption/<string:country>')
