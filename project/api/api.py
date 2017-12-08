@@ -19,6 +19,12 @@ def close_connection(exception):
     if db is not None:
         db.close()
 
+@app.route('/countries')
+def all_countries():
+    cur = get_db().execute('SELECT ShortName, CountryCode FROM Country')
+    countries_infos = cur.fetchall()
+    cur.close()
+    return jsonify(countries_infos)
 
 @app.route('/country/<string:country>')
 def informations_by_country(country):

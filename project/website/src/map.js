@@ -306,12 +306,37 @@ countriesGroup
 
 console.log("Requesting map...");
 // draw a path for each feature/country
-axios.get(`${API_SERVER}/attacks/countries`, {
-        headers: {
-            'Access-Control-Allow-Origin': '*',
-        }
-    })
-    .then((response) => {
+axios.all([
+        axios.get(`${API_SERVER}/attacks/countries`, {
+            headers: {
+                'Access-Control-Allow-Origin': '*',
+            }
+        }),
+        axios.get(`${API_SERVER}/countries`, {
+            headers: {
+                'Access-Control-Allow-Origin': '*',
+            }
+        })
+    ])
+    .then(axios.spread((response, countries_list) => {
+        var data_countries = {};
+        var iso_countries = {};
+        countries_list.data.forEach((data) => {
+            data_countries[data[0]] = null
+            iso_countries[data[0]] = data[1]
+        });
+
+        $('input.autocomplete').autocomplete({
+            data: data_countries,
+            limit: 20, // The max amount of results that can be shown at once. Default: Infinity.
+            onAutocomplete: function (val) {
+                countriesGroup
+                    .selectAll(`#country-${iso_countries[val]}`)
+                    .dispatch("click")
+            },
+            minLength: 1, // The minimum length of the input for the autocomplete to start. Default: 1.
+        });
+
         num_attacks = response.data;
         const obj = {}
         let max = 0
@@ -346,7 +371,7 @@ axios.get(`${API_SERVER}/attacks/countries`, {
             .attr("id", (d) => `country-${d.id}`)
             .attr("class", "country")
             .on("click", clicked);
-    })
+    }))
     .catch((error) => {
         console.log(error);
     });
