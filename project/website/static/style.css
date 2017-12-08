@@ -92,3 +92,23 @@ svg rect {
   font-weight: 700;
   overflow: initial;
 } */
+
+.side-nav {
+  width: 100%;
+  padding: 15px 50px 0 40px;
+  text-align: justify;
+}
+
+#blog-modal {
+  height: 100% !important;
+}
+
+#blog-footer {
+  position: relative;
+}
+
+#goto-vis {
+  position: absolute;
+  right:    0;
+  bottom:   20px;
+}

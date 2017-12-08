@@ -19,52 +19,87 @@
 
 <body>
 	<div class="fixed-action-btn">
-		<a class="btn-floating btn-large red modal-trigger disabled" data-target="charts-modal" id="charts-button">
+		<a class="btn-floating btn-small red modal-trigger disabled" data-target="charts-modal" id="charts-button">
 			<i class="material-icons">insert_chart</i>
 		</a>
-		<a class="btn-floating btn-large black modal-trigger disabled" data-target="details-modal" id="details-button">
+		<a class="btn-floating btn-small black modal-trigger disabled" data-target="details-modal" id="details-button">
 			<i class="material-icons">short_text</i>
 		</a>
-		<a class="btn-floating btn-large blue modal-trigger" data-target="help-modal">
-			<i class="material-icons">help</i>
+		<a class="btn-floating btn-small blue modal-trigger" data-activates="blog-modal" id="blog-button">
+			<i class="material-icons">menu</i>
 		</a>
 		<ul>
 	</div>
 
 	<div id="map-holder"></div>
 
-	<div id="help-modal" class="modal modal-fixed-footer">
-		<div class="modal-content">
-			<h3>Impact of Terrorism on World Development</h3>
-			<h4>What is this app about?</h4>
-			<h5>Definition of terrorism</h5>
-			<blockquote class="flow-text">
-				"The threatened or actual use of illegal force and violence by a non-state actor to attain a political, economic, religious,
-				or social goal through fear, coercion, or intimidation."
-			</blockquote>
-			<p class="flow-text">
-				The idea of the project is to give
-				<strong>insightful information about the potential correlation that exists between the development of a country and terrorist
-					attacks occuring in that particular country.</strong> To do so, we use the dataset provided by the World Bank along
-				with an open-source global terrorism database.</p>
-			<p class="flow-text">The former provide information about
-				<strong>world development indicators</strong> such as CO2 emissions, birth death crude, number of hospital beds, all of this
-				for more than 180 countries from 1960 to 2015. The latter dataset provide information on location, tactics, perpetrators,
-				targets, and outcomes for more than 170'000
-				<strong>terrorist attacks</strong> worldwide, from 1970 to 2016.
-			</p>
-			<h4>How to use it?</h4>
-			<ol class="flow-text">
-				<li>Close this modal.</li>
-				<li>Click on the country you are interested in.</li>
-				<li>The points represent terrorist attacks that happend between
-					<strong>1970</strong> and
-					<strong>2016</strong>.</li>
-				<li>Click on the bottom right button to see details and explore correlations with social and economic indicators.</li>
-			</ol>
-		</div>
-		<div class="modal-footer">
-			<a href="#!" class="modal-action modal-close waves-effect waves-blue btn-flat">Ok</a>
+	<div id="blog-modal" class="side-nav">
+		<h1>Welcome!</h1>
+		<h3>Impact of Terrorism on World Development</h3>
+		<h4>What is this app about?</h4>
+		<h5>Definition of terrorism</h5>
+		<blockquote class="flow-text">
+			"The threatened or actual use of illegal force and violence by a non-state actor to attain a political, economic, religious,
+			or social goal through fear, coercion, or intimidation."
+		</blockquote>
+		<p class="flow-text">
+			The idea of the project is to give
+			<strong>insightful information about the potential correlation that exists between the development of a country and terrorist
+				attacks occuring in that particular country.</strong> To do so, we use the dataset provided by the World Bank along with
+			an open-source global terrorism database.</p>
+		<p class="flow-text">The former provide information about
+			<strong>world development indicators</strong> such as CO2 emissions, birth death crude, number of hospital beds, all of this for
+			more than 180 countries from 1960 to 2015. The latter dataset provide information on location, tactics, perpetrators,
+			targets, and outcomes for more than 170'000
+			<strong>terrorist attacks</strong> worldwide, from 1970 to 2016.
+		</p>
+		<h4>How to use it?</h4>
+		<ol class="flow-text">
+			<li>Close this menu.</li>
+			<li>Click on the country you are interested in.</li>
+			<li>The points represent terrorist attacks that happend between
+				<strong>1970</strong> and
+				<strong>2016</strong>.</li>
+			<li>Click on the bottom right button to see details and explore correlations with social and economic indicators.</li>
+		</ol>
+		<h4>How to use it?</h4>
+		<ol class="flow-text">
+			<li>Close this menu.</li>
+			<li>Click on the country you are interested in.</li>
+			<li>The points represent terrorist attacks that happend between
+				<strong>1970</strong> and
+				<strong>2016</strong>.</li>
+			<li>Click on the bottom right button to see details and explore correlations with social and economic indicators.</li>
+		</ol>
+		<h4>How to use it?</h4>
+		<ol class="flow-text">
+			<li>Close this menu.</li>
+			<li>Click on the country you are interested in.</li>
+			<li>The points represent terrorist attacks that happend between
+				<strong>1970</strong> and
+				<strong>2016</strong>.</li>
+			<li>Click on the bottom right button to see details and explore correlations with social and economic indicators.</li>
+		</ol>
+		<h4>How to use it?</h4>
+		<ol class="flow-text">
+			<li>Close this menu.</li>
+			<li>Click on the country you are interested in.</li>
+			<li>The points represent terrorist attacks that happend between
+				<strong>1970</strong> and
+				<strong>2016</strong>.</li>
+			<li>Click on the bottom right button to see details and explore correlations with social and economic indicators.</li>
+		</ol>
+		<h4>How to use it?</h4>
+		<ol class="flow-text">
+			<li>Close this menu.</li>
+			<li>Click on the country you are interested in.</li>
+			<li>The points represent terrorist attacks that happend between
+				<strong>1970</strong> and
+				<strong>2016</strong>.</li>
+			<li>Click on the bottom right button to see details and explore correlations with social and economic indicators.</li>
+		</ol>
+		<div id="blog-footer">
+			<button class="waves-effect waves-light red btn-large" onClick="javascript:$('#blog-button').sideNav('hide');" id="goto-vis">Go to the visualization</button>
 		</div>
 	</div>
 

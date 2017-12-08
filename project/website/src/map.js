@@ -14,10 +14,12 @@ const {
 } = require('./utils.js')
 
 $('#details-modal').modal()
-$('#help-modal').modal()
 $('#charts-modal').modal({
     ready: () => details_chart.resizeListener()
 })
+$("#blog-button").sideNav();
+$("#blog-button").sideNav('show');
+$('#blog-modal').collapsible();
 
 API_SERVER = "http://127.0.0.1:5000"
 
@@ -215,7 +217,7 @@ function clicked(d) {
                     .attr("class", "mark")
                     .attr("cx", p => projection(p)[0])
                     .attr("cy", p => projection(p)[1])
-                    .attr("fill", p => d3.interpolatePlasma((p[2] - min) / (max - min)))
+                    .attr("fill", p => d3.interpolateInferno((p[2] - min) / (max - min)))
 
                 Array.prototype.forEach.call(document.getElementsByClassName("country-name"), e => e.innerText = country_infos[0])
                 document.getElementById("country-region").innerText = country_infos[1]
