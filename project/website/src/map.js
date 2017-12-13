@@ -13,12 +13,43 @@ const {
     formatNumber
 } = require('./utils.js')
 
+$('select#indicators').on('change', (e) => {
+    axios.get(`${API_SERVER}${e.target.value}${active.data()[0].id}`)
+        .then(({
+            data
+        }) => {
+            data = data.filter(d => d[0] >= years[0] && d[0] <= years[years.length - 1])
+
+            let final = []
+            for (var i = 0; i < years.length; i++) {
+                idx = data.map(d => d[0]).indexOf(years[i])
+                if (idx == -1)
+                    final.push(null)
+                else
+                    final.push(data[idx][1])
+            }
+
+            indicators_chart.update({
+                labels: years,
+                series: [
+                    final
+                ]
+            })
+        })
+}).material_select()
 $('#details-modal').modal()
 $('#charts-modal').modal({
-    ready: () => details_chart.resizeListener()
+    ready: () => {
+        details_chart.resizeListener()
+        indicators_chart.resizeListener()
+    },
+    complete: () => {
+        console.log("TODO: RESET SELECT AND CHART WHEN MODAL CLOSE");
+        //$('select#indicators').find('option:first').attr('selected', 'selected')        
+    }
 })
 $("#blog-button").sideNav();
-$("#blog-button").sideNav('show');
+//$("#blog-button").sideNav('show');
 $('#blog-modal').collapsible();
 
 API_SERVER = "http://127.0.0.1:5000"
@@ -33,7 +64,9 @@ const h = 1250
 var minZoom
 var maxZoom
 var active = d3.select(null)
+let years = []
 let details_chart = null
+let indicators_chart = null
 
 // DEFINE FUNCTIONS/OBJECTS
 // Define map projection
@@ -161,12 +194,9 @@ function clicked(d) {
                 axios.get(`${API_SERVER}/attacks/num_attacks/${d.id}`),
                 axios.get(`${API_SERVER}/attacks/types/${d.id}`),
                 axios.get(`${API_SERVER}/attacks/perpetrators/${d.id}`),
-                axios.get(`${API_SERVER}/attacks/targets/${d.id}`)
-            ], {
-                headers: {
-                    'Access-Control-Allow-Origin': '*',
-                }
-            })
+                axios.get(`${API_SERVER}/attacks/targets/${d.id}`),
+                axios.get(`${API_SERVER}/score/${d.id}`)
+            ])
             .then(axios.spread(({
                 data: attacks
             }, {
@@ -181,6 +211,8 @@ function clicked(d) {
                 data: groups
             }, {
                 data: targets
+            }, {
+                data: score
             }) => {
                 const points = _.uniqBy(
                     attacks
@@ -242,11 +274,13 @@ function clicked(d) {
                     <h4>${target[0] === 'Unknown' ? 'Unclassified' : target[0]}</h4>
                 </li>`).join("")
 
+                years = num_attacks.map(a => parseInt(a[0]))
                 const data = {
-                    labels: num_attacks.map(a => a[0]),
+                    labels: years,
                     series: [
                         num_attacks.map(a => a[1]), // purple/pink=#8f0da4
-                        num_victims.map(v => v[1]) // orange
+                        num_victims.map(v => v[1]), // orange
+                        score.map(s => s[1])
                     ]
                 };
 
@@ -262,12 +296,19 @@ function clicked(d) {
                     }),
                     plugins: [
                         Chartist.plugins.legend({
-                            legendNames: ['Number of attacks', 'Number of victims']
+                            legendNames: ['Number of attacks', 'Number of victims', 'Global Terrorism Index']
                         }),
                         Chartist.plugins.tooltip()
                     ]
                 }
                 details_chart = new Chartist.Line('#chart-attacks-victims', data, options)
+
+                const options_indic = {
+                    width: "100%",
+                    showArea: true,
+                    showPoint: false
+                }
+                indicators_chart = new Chartist.Line('#chart-indicators', null, options_indic)
             }))
             .catch((error) => {
                 console.log(error)
@@ -307,16 +348,8 @@ countriesGroup
 console.log("Requesting map...");
 // draw a path for each feature/country
 axios.all([
-        axios.get(`${API_SERVER}/attacks/countries`, {
-            headers: {
-                'Access-Control-Allow-Origin': '*',
-            }
-        }),
-        axios.get(`${API_SERVER}/countries`, {
-            headers: {
-                'Access-Control-Allow-Origin': '*',
-            }
-        })
+        axios.get(`${API_SERVER}/attacks/countries`),
+        axios.get(`${API_SERVER}/countries`)
     ])
     .then(axios.spread((response, countries_list) => {
         var data_countries = {};
