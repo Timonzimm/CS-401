@@ -187,6 +187,22 @@ def gni_per_year_by_country(country):
     cur.close()
     return jsonify(gni)
 
+@app.route('/development/economy/tourism/<string:country>')
+def tourism_per_year_by_country(country):
+    """Returns the number of arrivals (tourism) per year of the given country."""
+    cur = get_db().execute('SELECT Year, Value FROM Indicators WHERE CountryCode="{}" AND IndicatorCode="ST.INT.ARVL"'.format(country))
+    tourism = cur.fetchall()
+    cur.close()
+    return jsonify(tourism)
+
+@app.route('/development/economy/foreign_inv/<string:country>')
+def foreign_inv_per_year_by_country(country):
+    """Returns the foreign direct investment (net inflows % of GDP) per year of the given country."""
+    cur = get_db().execute('SELECT Year, Value FROM Indicators WHERE CountryCode="{}" AND IndicatorCode="BX.KLT.DINV.WD.GD.ZS"'.format(country))
+    foreign_inv = cur.fetchall()
+    cur.close()
+    return jsonify(foreign_inv)
+
 # Social health development indicators
 
 @app.route('/development/social_health/mortality_rate_under_5/<string:country>')
@@ -220,6 +236,22 @@ def death_rate_per_year_by_country(country):
     death_rate = cur.fetchall()
     cur.close()
     return jsonify(death_rate)
+
+@app.route('/development/social_health/population_dens/<string:country>')
+def population_dens_per_year_by_country(country):
+    """Returns the population density (people per square km of land area) per year of the given country."""
+    cur = get_db().execute('SELECT Year, Value FROM Indicators WHERE CountryCode="{}" AND IndicatorCode="EN.POP.DNST"'.format(country))
+    population_dens = cur.fetchall()
+    cur.close()
+    return jsonify(population_dens)
+
+@app.route('/development/social_health/armed_forces/<string:country>')
+def armed_forces_per_year_by_country(country):
+    """Returns the armed forces personnel (total) per year of the given country."""
+    cur = get_db().execute('SELECT Year, Value FROM Indicators WHERE CountryCode="{}" AND IndicatorCode="MS.MIL.TOTL.P1"'.format(country))
+    armed_forces = cur.fetchall()
+    cur.close()
+    return jsonify(armed_forces)
 
 # Population development indicators
 
@@ -280,6 +312,8 @@ def internet_users_per_year_by_country(country):
     internet_users = cur.fetchall()
     cur.close()
     return jsonify(internet_users)
+
+
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5000, debug=True, threaded=True)
