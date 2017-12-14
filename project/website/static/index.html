@@ -114,7 +114,7 @@
 			<h3 class="country-name"></h3>
 			<div class="row valign-wrapper">
 				<div class="col s12">
-					<div class="ct-chart" id="chart-attacks-victims" style="height: 350px;"></div>
+					<div class="ct-chart" id="chart-attacks-victims" style="height: 250px;"></div>
 				</div>
 			</div>
 
@@ -123,36 +123,38 @@
 					<select id="indicators">
 						<option value="" disabled selected>Choose an indicator</option>
 						<optgroup label="Economic">
+							<option value="/development/economy/tourism/">Tourism - number of arrivals</option>
+							<option value="/development/economy/foreign_inv/">Foreign direct investment (net inflows % GDP)</option>
 							<option value="/development/economy/gdp/">Gross domestic product (annual % growth)</option>
-							<option value="/development/economy/arm_imports/">Arm imports (SIPRI)</option>
-							<option value="/development/economy/arm_exports/">Arm exports (SIPRI)</option>
 							<option value="/development/economy/gs_imports/">Good and service imports (annual % growth)</option>
 							<option value="/development/economy/gs_exports/">Good and service exports (annual % growth)</option>
-							<option value="/development/economy/electric_consumption/">Electric consumption (kWh per capita)</option>
-							<option value="/development/economy/co2_emissions/">CO2 emissions (in kt)</option>
-							<option value="/development/economy/total_reserves/">Total reserves (minus gold) in US$</option>
-						</optgroup>
-						<optgroup label="Social &amp; Health">
-							<option value="/development/social_health/mortality_rate_under_5/">Mortality rate under 5 (per 1,000 people)</option>
-							<option value="/development/social_health/hospital_beds/">Number of hospital beds (per 1,000 people)</option>
-							<option value="/development/social_health/birth_rate/">Birth rate (per 1,000 people)</option>
-							<option value="/development/social_health/death_rate/">Death rate (per 1,000 people)</option>
-							<option value="/development/social_health/population_growth/">Population annual % growth</option>
-							<option value="/development/social_health/population_0_14/">Population aged between 0-14 (in %)</option>
-							<option value="/development/social_health/population_15_64/">Population aged between 15-64 (in %) </option>
-							<option value="/development/social_health/population_65_up/">Population aged between 65 and above (in %)</option>
-						</optgroup>
-						<optgroup label="Wealth">
+							<!-- 
+							<option value="/development/economy/arm_imports/">Arm imports (SIPRI)</option>
+							<option value="/development/economy/arm_exports/">Arm exports (SIPRI)</option>
 							<option value="/development/wealth/renewable_energy_cons/">Renewable energy consumption (% of total final energy consumption)</option>
 							<option value="/development/wealth/air_transport/">Number of passenger carried</option>
-							<option value="/development/wealth/internet_users/">Internet users (per 1,000 people)</option>
+							<option value="/development/economy/electric_consumption/">Electric consumption (kWh per capita)</option>
+							<option value="/development/economy/co2_emissions/">CO2 emissions (in kt)</option>
+							<option value="/development/economy/total_reserves/">Total reserves (minus gold) in US$</option> -->
+						</optgroup>
+						<optgroup label="Social &amp; Health">
+							<!-- <option value="/development/social_health/mortality_rate_under_5/">Mortality rate under 5 (per 1,000 people)</option>
+							<option value="/development/social_health/hospital_beds/">Number of hospital beds (per 1,000 people)</option> -->
+							<option value="/development/social_health/birth_rate/">Birth rate (per 1,000 people)</option>
+							<option value="/development/social_health/death_rate/">Death rate (per 1,000 people)</option>
+							<option value="/development/social_health/armed_forces/">Armed forces personnel, total</option>
+							<!-- <option value="/development/social_health/population_growth/">Population annual % growth</option>
+							<option value="/development/social_health/population_dens/">Population density (ppl per sq. km of land area)</option>
+							<option value="/development/social_health/population_0_14/">Population aged between 0-14 (in %)</option>
+							<option value="/development/social_health/population_15_64/">Population aged between 15-64 (in %) </option>
+							<option value="/development/social_health/population_65_up/">Population aged between 65 and above (in %)</option> -->
 						</optgroup>
 					</select>
 				</div>
 			</div>
 			<div class="row valign-wrapper">
 				<div class="col s12">
-					<div class="ct-chart" id="chart-indicators" style="height: 350px;"></div>
+					<div class="ct-chart" id="chart-indicators" style="height: 250px;"></div>
 				</div>
 			</div>
 		</div>
