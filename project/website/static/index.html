@@ -40,70 +40,165 @@
 	<div id="map-holder"></div>
 
 	<div id="blog-modal" class="side-nav">
-		<h1>Welcome!</h1>
-		<h3>Impact of Terrorism on World Development</h3>
-		<h4>What is this app about?</h4>
-		<h5>Definition of terrorism</h5>
-		<blockquote class="flow-text">
-			"The threatened or actual use of illegal force and violence by a non-state actor to attain a political, economic, religious,
-			or social goal through fear, coercion, or intimidation."
-		</blockquote>
-		<p class="flow-text">
-			The idea of the project is to give
-			<strong>insightful information about the potential correlation that exists between the development of a country and terrorist
-				attacks occuring in that particular country.</strong> To do so, we use the dataset provided by the World Bank along with
-			an open-source global terrorism database.</p>
-		<p class="flow-text">The former provide information about
-			<strong>world development indicators</strong> such as CO2 emissions, birth death crude, number of hospital beds, all of this for
-			more than 180 countries from 1960 to 2015. The latter dataset provide information on location, tactics, perpetrators,
-			targets, and outcomes for more than 170'000
-			<strong>terrorist attacks</strong> worldwide, from 1970 to 2016.
-		</p>
-		<h4>How to use it?</h4>
-		<ol class="flow-text">
-			<li>Close this menu.</li>
-			<li>Click on the country you are interested in.</li>
-			<li>The points represent terrorist attacks that happend between
-				<strong>1970</strong> and
-				<strong>2016</strong>.</li>
-			<li>Click on the bottom right button to see details and explore correlations with social and economic indicators.</li>
-		</ol>
-		<h4>How to use it?</h4>
-		<ol class="flow-text">
-			<li>Close this menu.</li>
-			<li>Click on the country you are interested in.</li>
-			<li>The points represent terrorist attacks that happend between
-				<strong>1970</strong> and
-				<strong>2016</strong>.</li>
-			<li>Click on the bottom right button to see details and explore correlations with social and economic indicators.</li>
-		</ol>
-		<h4>How to use it?</h4>
-		<ol class="flow-text">
-			<li>Close this menu.</li>
-			<li>Click on the country you are interested in.</li>
-			<li>The points represent terrorist attacks that happend between
-				<strong>1970</strong> and
-				<strong>2016</strong>.</li>
-			<li>Click on the bottom right button to see details and explore correlations with social and economic indicators.</li>
-		</ol>
-		<h4>How to use it?</h4>
-		<ol class="flow-text">
-			<li>Close this menu.</li>
-			<li>Click on the country you are interested in.</li>
-			<li>The points represent terrorist attacks that happend between
-				<strong>1970</strong> and
-				<strong>2016</strong>.</li>
-			<li>Click on the bottom right button to see details and explore correlations with social and economic indicators.</li>
-		</ol>
-		<h4>How to use it?</h4>
-		<ol class="flow-text">
-			<li>Close this menu.</li>
-			<li>Click on the country you are interested in.</li>
-			<li>The points represent terrorist attacks that happend between
-				<strong>1970</strong> and
-				<strong>2016</strong>.</li>
-			<li>Click on the bottom right button to see details and explore correlations with social and economic indicators.</li>
-		</ol>
+		<div id="blog-text">
+			<h1>Welcome!</h1>
+			<h3>Impact of Terrorism on World Development</h3>
+			<h4>What is this app about?</h4>
+			<h5>Definition of terrorism</h5>
+			<blockquote class="flow-text">
+				"The threatened or actual use of illegal force and violence by a non-state actor to attain a political, economic, religious,
+				or social goal through fear, coercion, or intimidation."
+			</blockquote>
+			<p class="flow-text">
+				The idea of the project is to give
+				<strong>insightful information about the potential correlation that exists between the development of a country and terrorist
+					attacks occuring in that particular country.</strong> To do so, we use the dataset provided by the World Bank along
+				with an open-source global terrorism database.</p>
+			<p class="flow-text">The former provide information about
+				<strong>world development indicators</strong> such as CO2 emissions, birth death crude, number of hospital beds, all of this
+				for more than 180 countries from 1960 to 2015. The latter dataset provide information on location, tactics, perpetrators,
+				targets, and outcomes for more than 170'000
+				<strong>terrorist attacks</strong> worldwide, from 1970 to 2016.
+			</p>
+			<h4>How to use it?</h4>
+			<ol class="flow-text">
+				<li>Close this menu.</li>
+				<li>Click on the country you are interested in.</li>
+				<li>The points represent terrorist attacks that happend between
+					<strong>1970</strong> and
+					<strong>2016</strong>.</li>
+				<li>Click on the bottom right button to see details and explore correlations with social and economic indicators.</li>
+			</ol>
+			<hr class="divider"/>
+			<h4>Data Story</h4>
+			<p class="flow-text">
+				The main idea was to make an appropriate selection of indicators from both databases to be able to show if any correlation
+				could be drawn from it. The difficulty was to choose the most meaningful and straightforward indicators. After a long
+				and meticulous inspection, we selected
+				<strong>at first</strong> the following indicators, yearly, for each country:</p>
+			<h5>Global Terrorism Database</h5>
+			<ul class="flow-text">
+				<li>Total number of attacks.</li>
+				<li>Total number of victims.</li>
+			</ul>
+			<p class="flow-text">
+				In front of the compeling evidence that using only these two indicators was not enough to draw clear correlations between
+				them and development indicators, we had to find a solution or potential improvement. Thus, we started to look for an
+				<strong>index which encompasses for more variables</strong> and found the "
+				<a href="https://en.wikipedia.org/wiki/Global_Terrorism_Index" target="_gti">Global Terrorism Index</a>", or GTI, which is common in official reports done by institutional entities. This index is
+				based on multiple variables to determine each country's score:
+			</p>
+			<ul class="flow-text">
+				<li>Total number of terrorist attacks.</li>
+				<li>Total number of fatalities caused by terrorism.</li>
+				<li>Total number of injuries caused by terrorism.</li>
+				<li>Approximate level of total property damage from terrorist attacks.</li>
+			</ul>
+
+			<p class="flow-text">The weightings used to aggregate these variables into a single score were determined by consultation with the GPI Expert
+				Panel:
+			</p>
+			<table>
+				<thead>
+					<tr>
+						<th>Variable</th>
+						<th>Weight</th>
+					</tr>
+				</thead>
+
+				<tbody>
+					<tr>
+						<td>Total number of terrorist attacks</td>
+						<td>1</td>
+					</tr>
+					<tr>
+						<td>Total number of fatalities caused by terrorism</td>
+						<td>3</td>
+					</tr>
+					<tr>
+						<td>Total number of injuries caused by terrorism</td>
+						<td>0.5</td>
+					</tr>
+					<tr>
+						<td>Sum of property damages measure</td>
+						<td>2</td>
+					</tr>
+				</tbody>
+			</table>
+			<p class="flow-text">Where the latest score "Sum of property damages measure" is further splitted into 4 different levels, each with its corresponding
+				score:
+			</p>
+			<table>
+				<thead>
+					<tr>
+						<th>Damage level</th>
+						<th>Score</th>
+					</tr>
+				</thead>
+
+				<tbody>
+					<tr>
+						<td>Unknown</td>
+						<td>0</td>
+					</tr>
+					<tr>
+						<td>Minor (likely
+							< $1 million)</td>
+								<td>1</td>
+					</tr>
+					<tr>
+						<td>Major (likely between $1 million and $1 billion)</td>
+						<td>2</td>
+					</tr>
+					<tr>
+						<td>Catastrophic (likely > $1 billion)</td>
+						<td>3</td>
+					</tr>
+				</tbody>
+			</table>
+			<p class="flow-text">The GTI is then calculated by a weighted sum of all the aforementioned indicators and we obtain this second version of
+				the indicators' list, allowing us to rapidly grasp the context in which a country is:</p>
+			<ul class="flow-text">
+				<li>Number of attacks per year.</li>
+				<li>Number of victims per year.</li>
+				<li>Global Terrorism Index</li>
+			</ul>
+
+			<h5>World Development Indicators</h5>
+			<ul class="flow-text">
+				<li>Economic</li>
+				<ul class="flow-text">
+					<li>Tourism - number of arrivals</li>
+					<li>Foreign direct investment (net inflows % GDP)</li>
+					<li>Gross Domestic Product (annual % growth)</li>
+					<li>Good and service imports (annual % growth)</li>
+					<li>Good and service exports (annual % growth)</li>
+				</ul>
+				<li>Social &amp; Health</li>
+				<ul class="flow-text">
+					<li>Birth rate (per 1,000 people)</li>
+					<li>Death rate (per 1,000 people)</li>
+					<li>Armed forces personnel, total</li>
+				</ul>
+			</ul>
+			<p class="flow-text">These indicators help us to understand the development process of a specific country in the following sectors : economy,
+				social health, population and wealth. The delicate part was then to see if a link can exist between a pair of indicators
+				chosen from each one of these two databases. However, this way of proceeding has a severe weak point: comparing only
+				two indicators is equivalent to reducing a causal link to an unique variable while it includes several. To overcome on
+				part of this issue, we decided to aggregate a subset of the GTD indicators in order to use the Global Terrorism Index
+				(GTI) scoring system. This score is used in the well-known report of the same name published annually by Institute for
+				Economics and Peace (IEP) to account for the relative impact of terrorism for a given year. The score, that was determined
+				by GTI expert panel, is computed using four factors and different weight associated with: # description de la formule
+				(ou lien sur page wikipedia, mais je pense que mettre la formule c’est bien!) Of course a similar index for the development
+				indicators would be very desirable. Unfortunately, due to the very different nature of the indicators we selected, it
+				was difficult from our position to create and define an index that can encapsulate all these aspects with justifiable
+				reasons. Hence, as a precaution, we decided to left the development indicators as is. This doesn’t mean that we couldn’t
+				draw conclusions from the data we have. Inspecting some countries we, indeed, found some interesting results were we
+				think terrorism is directly but not only correlated. Here are a few examples. Philippines - Tourism Colombia - Tourism,
+				Foreign inv Switzerland - Tourism, Foreign inv USA - Tourism, Foreign inv Algeria - Armed forces Peru - Forein inv South
+				Africa - Armed forces Germany - Birth rate
+			</p>
+		</div>
 		<div id="blog-footer">
 			<button class="waves-effect waves-light red btn-large" onClick="javascript:$('#blog-button').sideNav('hide');" id="goto-vis">Go to the visualization</button>
 		</div>
@@ -128,26 +223,11 @@
 							<option value="/development/economy/gdp/">Gross domestic product (annual % growth)</option>
 							<option value="/development/economy/gs_imports/">Good and service imports (annual % growth)</option>
 							<option value="/development/economy/gs_exports/">Good and service exports (annual % growth)</option>
-							<!-- 
-							<option value="/development/economy/arm_imports/">Arm imports (SIPRI)</option>
-							<option value="/development/economy/arm_exports/">Arm exports (SIPRI)</option>
-							<option value="/development/wealth/renewable_energy_cons/">Renewable energy consumption (% of total final energy consumption)</option>
-							<option value="/development/wealth/air_transport/">Number of passenger carried</option>
-							<option value="/development/economy/electric_consumption/">Electric consumption (kWh per capita)</option>
-							<option value="/development/economy/co2_emissions/">CO2 emissions (in kt)</option>
-							<option value="/development/economy/total_reserves/">Total reserves (minus gold) in US$</option> -->
 						</optgroup>
 						<optgroup label="Social &amp; Health">
-							<!-- <option value="/development/social_health/mortality_rate_under_5/">Mortality rate under 5 (per 1,000 people)</option>
-							<option value="/development/social_health/hospital_beds/">Number of hospital beds (per 1,000 people)</option> -->
 							<option value="/development/social_health/birth_rate/">Birth rate (per 1,000 people)</option>
 							<option value="/development/social_health/death_rate/">Death rate (per 1,000 people)</option>
 							<option value="/development/social_health/armed_forces/">Armed forces personnel, total</option>
-							<!-- <option value="/development/social_health/population_growth/">Population annual % growth</option>
-							<option value="/development/social_health/population_dens/">Population density (ppl per sq. km of land area)</option>
-							<option value="/development/social_health/population_0_14/">Population aged between 0-14 (in %)</option>
-							<option value="/development/social_health/population_15_64/">Population aged between 15-64 (in %) </option>
-							<option value="/development/social_health/population_65_up/">Population aged between 65 and above (in %)</option> -->
 						</optgroup>
 					</select>
 				</div>

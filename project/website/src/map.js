@@ -49,7 +49,7 @@ $('#charts-modal').modal({
     }
 })
 $("#blog-button").sideNav();
-//$("#blog-button").sideNav('show');
+$("#blog-button").sideNav('show');
 $('#blog-modal').collapsible();
 
 API_SERVER = "http://127.0.0.1:5000"

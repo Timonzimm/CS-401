@@ -104,8 +104,17 @@ svg rect {
 
 .side-nav {
   width: 100%;
+}
+
+#blog-text {
   padding: 15px 15% 0 15%;
   text-align: justify;
+}
+#blog-text ul {
+  padding-left: 25px;
+}
+#blog-text ul > li {
+  list-style-type: disc;
 }
 
 #blog-modal {
@@ -118,7 +127,7 @@ svg rect {
 
 #goto-vis {
   position: absolute;
-  right:    0;
+  right:    20px;
   bottom:   20px;
 }
 
