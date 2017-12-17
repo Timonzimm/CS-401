@@ -69,7 +69,21 @@
 					<strong>2016</strong>.</li>
 				<li>Click on the bottom right button to see details and explore correlations with social and economic indicators.</li>
 			</ol>
-			<hr class="divider"/>
+			<hr class="divider" />
+			<h4>Quick guide</h4>
+			<ul class="flow-text">
+				<li>The color of each country is representing the total number of attacks that happened from 1960 to 2015. The darker (left), the
+					higher.
+				</li>
+			</ul>
+			<img src="/images/grayscale.jpg" height="40px" width="400px" />
+			<ul class="flow-text">
+				<li>When zoomed in, each point represents a terrorist attack in the country, from 1960 to 2015, with an indicaton of the
+					density of the attacks. The lighter (right), the more attacks the region has suffered</li>
+			</ul>
+			<img src="/images/inferno.png" height="40px" width="400px" />
+
+			<hr class="divider" />
 			<h4>Data Story</h4>
 			<p class="flow-text">
 				The main idea was to make an appropriate selection of indicators from both databases to be able to show if any correlation
@@ -181,23 +195,56 @@
 					<li>Armed forces personnel, total</li>
 				</ul>
 			</ul>
-			<p class="flow-text">These indicators help us to understand the development process of a specific country in the following sectors : economy,
-				social health, population and wealth. The delicate part was then to see if a link can exist between a pair of indicators
-				chosen from each one of these two databases. However, this way of proceeding has a severe weak point: comparing only
-				two indicators is equivalent to reducing a causal link to an unique variable while it includes several. To overcome on
-				part of this issue, we decided to aggregate a subset of the GTD indicators in order to use the Global Terrorism Index
-				(GTI) scoring system. This score is used in the well-known report of the same name published annually by Institute for
-				Economics and Peace (IEP) to account for the relative impact of terrorism for a given year. The score, that was determined
-				by GTI expert panel, is computed using four factors and different weight associated with: # description de la formule
-				(ou lien sur page wikipedia, mais je pense que mettre la formule c’est bien!) Of course a similar index for the development
-				indicators would be very desirable. Unfortunately, due to the very different nature of the indicators we selected, it
-				was difficult from our position to create and define an index that can encapsulate all these aspects with justifiable
-				reasons. Hence, as a precaution, we decided to left the development indicators as is. This doesn’t mean that we couldn’t
-				draw conclusions from the data we have. Inspecting some countries we, indeed, found some interesting results were we
-				think terrorism is directly but not only correlated. Here are a few examples. Philippines - Tourism Colombia - Tourism,
-				Foreign inv Switzerland - Tourism, Foreign inv USA - Tourism, Foreign inv Algeria - Armed forces Peru - Forein inv South
-				Africa - Armed forces Germany - Birth rate
+			<p class="flow-text">These indicators help us to understand the development process of a specific country in the two sectors : Economic and
+				Social &amp; health. Inspecting some countries we, indeed, found some interesting results were we think terrorism is
+				directly but not only correlated. Here are a few examples:
 			</p>
+			<h5>Philippines - Impact on tourism</h5>
+			<p class="flow-text">Although the data for tourism is quite limited (1995-2013) for the Philippines, we can see that its increase has been
+				slowed down by terrorism. We can see three main periods in our datapoints that express this behaviour.
+			</p>
+			<p class="flow-text">The country suffered a lot from the
+				<a href="https://en.wikipedia.org/wiki/Terrorism_in_the_Philippines#2010s" target="_blank">attacks</a>, particularly between 2000 and 2003. We are able to see the impact in the tourism indicator from a downtrend
+				with two hard blows clearly distinguishable. Then, as the terrorism reduces in the following years it allows the tourism
+				to grow at its full potential until it is again slowed down by a turbulent time with a spike in 2008 corresponding to
+				a downfall in 2009 for the tourism.
+			</p>
+			<img src="/images/philippines.jpg" />
+
+			<h5>Switzerland - Impact on Tourism and Foreign Investment</h5>
+			<p class="flow-text">In a similar fashion, we can see that Switzerland also suffered drastically from a particular terrorist attack in the
+				development of its tourism. Indeed, the
+				<a href="https://en.wikipedia.org/wiki/Zug_massacre" target="_blank">attack</a> of the canton’s parliament of Zug in the 27th September of 2001, where 15 people died, shaked the whole country
+				and forced it to take stronger security measures. (même style d’image ici serait cool)</p>
+			<p class="flow-text">Looking at another development indicator, it can be seen that the foreign direct investment also reacted from the terrorist
+				attack.
+			</p>
+			<img src="/images/switzerland.png" />
+			<img src="/images/switzerland2.png" />
+
+			<h5>South Africa - Impact on armed forces</h5>
+			<p class="flow-text">Looking at the terrorism history of South Africa we observe a turbulent period in the 1991-1994 time window with the
+				<a href="https://en.wikipedia.org/wiki/Boipatong_massacre" target="_blank">boipatong massacre</a> at its culminating point.
+				<br/>It is possible to see the response of the authorities to this period of activity: an increase of the number of armed
+				forces. A few years later, with much fewer attacks, the authorities finally decided to reduce the headcount to its initial
+				value.
+			</p>
+			<img src="/images/sa.png" />
+
+			<h5>Peru - Impact on Foreign Investment</h5>
+			<p class="flow-text">It is interesting to see that countries victim of terrorism can also influence whether or not foreign countries will invest
+				money in them. Peru characterizes this situation very well, as we can see that money starts flowing into the country
+				as soon as it calms down. No need to say much, the graphs are very self-explanatory.</p>
+			<img src="/images/peru.png" />
+
+
+			<h5>Final words...</h5>
+			<blockquote class="flow-text">
+				<p>Remember that all these analysis are perfunctory and the mechanisms are so complex that it is difficult to model exactly
+					why a trend is shifting or an indicator moving. We devided here to analyze the reactions through the lense of terrorist
+					attacks but many other explanations might be appropriate.</p>
+				<p> It has to be interpreted with caution, and rather used as an additional insight on the matter.</p>
+			</blockquote>
 		</div>
 		<div id="blog-footer">
 			<button class="waves-effect waves-light red btn-large" onClick="javascript:$('#blog-button').sideNav('hide');" id="goto-vis">Go to the visualization</button>
