@@ -27,7 +27,7 @@ As the definition states, we expect to see a correlation on economic and social 
 
 ## Results
 
-- Although the correlation might be taken with a very particular attention, one can learn a lot from the terrorist context in which a given country ir growing.
+- Although the correlation might be taken with a very particular attention, one can learn a lot from the terrorist context in which a given country is growing.
 
 # Website overview
 
