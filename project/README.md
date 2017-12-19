@@ -35,7 +35,7 @@ The World map gives a good overview of the history of Terrorism.
 
 ![World map](world_map.png)
 
-When the user click on a country we can see where attacks did occur. The color scheme we choose fully reflects the intensity by which a region has been attacked, allowing to grasp a better picture. 
+When the user clicks on a country we can see where attacks did occur. The color scheme we choose fully reflects the intensity by which a region has been attacked, allowing to grasp a better picture of the situation. 
 
 ![Life expectancy map](example_attacks_india.png)
 
