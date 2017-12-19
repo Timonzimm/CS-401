@@ -52,12 +52,12 @@
 				The idea of this project is to give
 				<strong>insightful information about the potential correlation that exists between the development of a country and terrorist
 					attacks occuring in that particular country.</strong> To do so, we use the
-					<a href ="https://data.worldbank.org/data-catalog/world-development-indicators" target="_wdi">dataset</a>
-					provided by the World Bank along with an open-source
-					<a href="https://www.start.umd.edu/gtd/" target="_gtd">global terrorism database</a>.</p>
+				<a href="https://data.worldbank.org/data-catalog/world-development-indicators" target="_wdi">dataset</a>
+				provided by the World Bank along with an open-source
+				<a href="https://www.start.umd.edu/gtd/" target="_gtd">global terrorism database</a>.</p>
 			<p class="flow-text">The former provide information about
 				<strong>world development indicators</strong> such as CO2 emissions, birth death crude, number of hospital beds, all of this
-				for more than 180 countries from 1960 to 2015. The latter dataset provide information on location, tactics, perpetrators,
+				for more than 180 countries from 1970 to 2015. The latter dataset provide information on location, tactics, perpetrators,
 				targets, and outcomes for more than 170'000
 				<strong>terrorist attacks</strong> worldwide, from 1970 to 2016.
 			</p>
@@ -73,13 +73,13 @@
 			<hr class="divider" />
 			<h4>Color Scheme</h4>
 			<ul class="flow-text">
-				<li>The color of each country is representing the total number of attacks that happened from 1960 to 2016. The darker (left), the
-					higher.
+				<li>The color of each country is representing the total number of attacks that happened from 1970 to 2016. The darker (left),
+					the higher.
 				</li>
 			</ul>
 			<img src="/images/grayscale.jpg" height="40px" width="400px" />
 			<ul class="flow-text">
-				<li>When zoomed in, each point represents a terrorist attack in the country, from 1960 to 2016, with an indication of the
+				<li>When zoomed in, each point represents a terrorist attack in the country, from 1970 to 2016, with an indication of the
 					density of the attacks. The lighter (right), the more attacks the region has suffered from.</li>
 			</ul>
 			<img src="/images/inferno.png" height="40px" width="400px" />
@@ -99,9 +99,9 @@
 			<p class="flow-text">
 				In front of the compeling evidence that using only these two indicators was not enough to draw clear correlations between
 				them and development indicators, we had to find a solution or potential improvement. Thus, we started to look for an
-				<strong>index which encompasses for more variables</strong> and found the 
-				<a href="https://en.wikipedia.org/wiki/Global_Terrorism_Index" target="_gti">Global Terrorism Index</a> (GTI) which is common in official reports done by institutional entities. This index is
-				based on multiple variables to determine each country's score:
+				<strong>index which encompasses for more variables</strong> and found the
+				<a href="https://en.wikipedia.org/wiki/Global_Terrorism_Index" target="_gti">Global Terrorism Index</a> (GTI) which is common in official reports done by institutional entities. This index is based
+				on multiple variables to determine each country's score:
 			</p>
 			<ul class="flow-text">
 				<li>Total number of terrorist attacks.</li>
@@ -113,64 +113,78 @@
 			<p class="flow-text">The weightings used to aggregate these variables into a single score were determined by consultation with the GPI Expert
 				Panel:
 			</p>
-			<table>
-				<thead>
-					<tr>
-						<th>Variable</th>
-						<th>Weight</th>
-					</tr>
-				</thead>
+			<div class="row valign-wrapper">
+				<div class="col s2"></div>
+				<div class="col s8">
+					<table>
+						<thead>
+							<tr>
+								<th>Variable</th>
+								<th>Weight</th>
+							</tr>
+						</thead>
 
-				<tbody>
-					<tr>
-						<td>Total number of terrorist attacks</td>
-						<td>1</td>
-					</tr>
-					<tr>
-						<td>Total number of fatalities caused by terrorism</td>
-						<td>3</td>
-					</tr>
-					<tr>
-						<td>Total number of injuries caused by terrorism</td>
-						<td>0.5</td>
-					</tr>
-					<tr>
-						<td>Sum of property damages measure</td>
-						<td>2</td>
-					</tr>
-				</tbody>
-			</table>
+						<tbody>
+							<tr>
+								<td>Total number of terrorist attacks</td>
+								<td>1</td>
+							</tr>
+							<tr>
+								<td>Total number of fatalities caused by terrorism</td>
+								<td>3</td>
+							</tr>
+							<tr>
+								<td>Total number of injuries caused by terrorism</td>
+								<td>0.5</td>
+							</tr>
+							<tr>
+								<td>Sum of property damages measure</td>
+								<td>2</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+				<div class="col s2"></div>
+			</div>
+
 			<p class="flow-text">Where the latest score "Sum of property damages measure" is further splitted into 4 different levels, each with its corresponding
 				score:
 			</p>
-			<table>
-				<thead>
-					<tr>
-						<th>Damage level</th>
-						<th>Score</th>
-					</tr>
-				</thead>
+			<div class="row valign-wrapper">
+				<div class="col s2"></div>
+				<div class="col s8">
+					<table>
+						<thead>
+							<tr>
+								<th>Damage level</th>
+								<th>Score</th>
+							</tr>
+						</thead>
 
-				<tbody>
-					<tr>
-						<td>Unknown</td>
-						<td>0</td>
-					</tr>
-					<tr>
-						<td>Minor (likely
-							< $1 million)</td>
-								<td>1</td>
-					</tr>
-					<tr>
-						<td>Major (likely between $1 million and $1 billion)</td>
-						<td>2</td>
-					</tr>
-					<tr>
-						<td>Catastrophic (likely > $1 billion)</td>
-						<td>3</td>
-					</tr>
-				</tbody>
-			</table>
+						<tbody>
+							<tr>
+								<td>Unknown</td>
+								<td>0</td>
+							</tr>
+							<tr>
+								<td>Minor (likely
+									< $1 million)</td>
+										<td>1</td>
+							</tr>
+							<tr>
+								<td>Major (likely between $1 million and $1 billion)</td>
+								<td>2</td>
+							</tr>
+							<tr>
+								<td>Catastrophic (likely > $1 billion)</td>
+								<td>3</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+				<div class="col s2"></div>
+			</div>
+
 			<p class="flow-text">The GTI is then calculated by a weighted sum of all the aforementioned indicators and we obtain this second version of
 				the indicators' list, allowing us to rapidly grasp the context in which a country is:</p>
 
@@ -237,14 +251,14 @@
 				value.
 			</p>
 			<center>
-				<img src="/images/sa.png"/>
+				<img src="/images/sa.png" />
 			</center>
 
 			<h5>Peru - Impact on Foreign Investment</h5>
 			<p class="flow-text">It is interesting to see that countries victim of terrorism can also influence whether or not foreign countries will invest
 				money in them. Peru characterizes this situation very well, as we can see that money starts flowing into the country
 				as soon as it calms down. No need to say much, the graphs are very self-explanatory.</p>
-			
+
 			<center>
 				<img src="/images/peru.png" />
 			</center>
