@@ -1,71 +1,58 @@
 # Impact of Terrorism on World Development
 
-# Notebook for milestone 2
-[Notebook](https://github.com/Timonzimm/CS-401/blob/master/project/report/report.ipynb)
+# Milestone 3
+[Notebook](https://github.com/Timonzimm/CS-401/blob/master/project/report/report.ipynb) Here states all the procedure we took in order to do the project.
+
+[Website](http://54.93.102.178/) Here you can enjoy a much more interactive visualization of our project.
 
 # Abstract
 ##### Definition of terrorism:
 >"The threatened or actual use of illegal force and violence by a non-state actor to attain a political, economic, religious, or social goal through fear, coercion, or intimidation."
 
-The idea of the project is to give insightful information about the potential correlation that exists between the development of a country and terrorist attacks occuring in that particular country. To do so, we will use the dataset provided by the World Bank along with an open-source global terrorism database.
+The idea of the project is to give insightful information about the potential correlation that exists between the development of a country and terrorist attacks occuring in that particular country. To do so, we will use the [dataset](https://www.kaggle.com/worldbank/world-development-indicators) provided by the World Bank along with an open-source [global terrorism database](https://www.kaggle.com/START-UMD/gtd).
 
 The former will provide information about **world development indicators** such as CO2 emissions, birth death crude, number of hospital beds, all of this for more than 180 countries from 1960 to 2015. The latter dataset will provide information on location, tactics, perpetrators, targets, and outcomes for more than 170'000 **terrorist attacks** worldwide, from 1970 to 2016.
 
-As the definition states, we expect to see a clear impact on economic and social indicators, for countries which are targeted by these attacks.
+As the definition states, we expect to see a correlation on economic and social indicators, for countries which are targeted by these attacks.
 
-# Research questions
+## Research questions
+
 - Study the correlation between terrorist attacks and social indicators.
 - Study the correlation between terrorist attacks and economic indicators.
-- If there is an impact on one of these indicators, study the **recovery time** for these countries.
-- If we want to automate the latter (recovery time), we will have to come up with some sort of criterion and see if it fits/works.
 
-# Dataset
-Global Terrorism Database: https://www.kaggle.com/START-UMD/gtd
+## Procedure
 
-World Development Indicators: https://www.kaggle.com/worldbank/world-development-indicators
+- Compute the Global Terrorism Index (GTI) and other aspects (number of attacks per year, top five most common attack types, ...).
+- Compare it to a selected subset of the World Development Indicators (tourism, GDP, ...).
 
+## Results
 
-First and foremost, not all the indicators are available for all countries and at any year, so just like the homeworks we will have to treat missing information. With this in mind, we will focus on particular timeframes surrounding an attack (e.g. 5 years prior and after), and on specific economic and social indicators available during this timeframe. We will merge the datasets starting by filtering a lot of indicators out, details in week 1 of milestone 1 hereafter.
+- Although the correlation might be taken with a very particular attention, one can learn a lot from the terrorist context in which a given country ir growing.
 
-To isolate the impact of the terrorist attack, and prune other factors of the equation (such as economic crisis and so on), we have to find a clever policy. From there we have thought about multiple possiblities:
-1. Take a neighboring country (geographic wise) which did not get attacked, and compare it with the targeted country.
-2. Pick multiple neighboring countries which were not attacked, and do a sort of averaging to compare them with the targeted country.
-3. Try to find a country who has a high correlation with the targeted country for one or multiple indicators, during the 5 years prior to the attack. From there, compare the same indicator(s), the year of the attack and for 5 years afterwards.
-4. Using a mathematical-based technique such as Pearson correlation coefficient.
+# Website overview
 
-This way, by picking a "sane" country, we hope to isolate the impact of the terrorist attack and be able to draw conclusions on the chosen indicators.
+The World map gives a good overview of the history of Terrorism.
 
-Datasets are in CSV format, the indicators dataset is much larger (1.9GB) since it contains plenty of information, while the dataset on terrorist attacks is much smaller (145MB) containing "only" 170'000 attacks. One very convenient point about the "World Indicators" dataset is the availability of a SQLite databse containing all the data.
+![World map](world_map.png)
 
-Therefore, we will probably try to merge the "Terrorist Attacks" database into SQLite to have a very clean and ordered datasource to fetch from.
+When the user click on a country we can see where attacks did occur. The color scheme we choose fully reflects the intensity by which a region has been attacked, allowing to grasp a better picture. 
 
-Here are a few examples of data that can be found in each dataset:
-![Terrorism map](terrorism_map.png)
-![Life expectancy map](life_expectancy_map.png)
+![Life expectancy map](example_attacks_india.png)
 
-## Typical visitor flow
-All of these will be done through a "Data Story" type of website:
-1. Running on Django and displaying an interactive world-map with possible attacks to consider.
-2. Once the user has picked an attack, display details as well as possible indicator(s) to consider.
-3. The algorithm running on the Django server will propose one or several neighboring countries which had a highly-correlated trend prior to the attack (e.g. 5 years).
-4. We would plot several data for the indicators to give insights about the trend shift that occured due to the attack.
-5. Try to come up with an estimated recovery-time for the country based on the criterions chosen, and compare with indicators aftermath.
+Interesting details and the top five most: common attack types, active terrorist groups and common targets are listed to give even more accuracy about the terrorist profile of the selected country.
 
-# Tasks for milestone 2
-|Week&nbsp;#|Expected task|
-|-----|-----|
-|Week&nbsp;1|Data merging, cleaning, then select some typical indicators (social and economic) available for each timeframe (e.g. +- 5 years) of each attack. Try to come up with a clever strategy regarding policy chosen to compare countries.|
-|Week&nbsp;2|Develop the webserver, template of the map(s) and interface design. Try to come up with a clever formula to approximate the recovery-time.|
-|Week&nbsp;3|Link the front-end/back-end with the database to have a website up an running. Fix, tweak and adapt interfaces.|
-|Week&nbsp;4|Analyze our results and visualizations. Use our website and seek out for potential alternative explanations in *historical events*, such as economic crisis, revolutions, and so on.|
+![Details info](details_info_india.png)
 
-# Tasks for milestone 3
-|Week&nbsp;#|Expected task|
-|-----|-----|
-|Week&nbsp;1|Add the different development indicators to the website visualization having in mind the following questions: How to show them? What kind of plot is appropriate? Should we present them along with the attack indicators or not? Why? How to show the correlation with the attacks without under-/over-estimate the results?|
-|Week&nbsp;2|Think about the story that will come in the website, write the abstract, and the guidelines about how to discover/learn from the content we provide.|
-|Week&nbsp;3|Set up the website in terms of logistics (server, web host or script, etc.). Think about the poster: how to structure it and what should be said. |
+Finally, two graphs are available. The first one gives information about the terrorist attacks (including the GTI). The second one plots a development indicator, for the available years, choosen from a subset of the world development indicators dataset. Both graphs allow to see if we can extract a correlation.
+
+![Score and index](score_and_index.png)
 
 # Important note
-It is important to notice that we will be merging this project with the one in the "Data Visualization" course, hence we will detail exactly which parts belong to one or another class. More coming soon.
+It is important to notice that we will be merging this project with the one in the "Data Visualization" course.
 
+# Contribution of group members
+**Timon** Website design and development, preliminary data analysis.
+
+**Jimi** Dataset cleaning and merging, devops for production server on AWS.
+
+**Joël** Backend python and API, data exploration, final results.
